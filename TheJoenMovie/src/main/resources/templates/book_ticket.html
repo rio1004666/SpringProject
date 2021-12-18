@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheJoen Movie</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ticket.css}"/>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script th:src="@{/js/ticket.js}"></script>
+    <script>
+        $(document).ready(function(){
+            $('.slider > ul').bxSlider({
+                pager: false,
+                easing: 'linear',
+                auto: true, // 슬라이더 자동여부 
+
+                autoHover: true // 마우스를 위에 올렸을 경우 애니메이션 정지 
+            });
+        });
+		  
+    </script>
+	<script type="text/javascript" th:inline="javascript">
+    	
+    	$(function(){
+			
+    		var title = [[${title}]];
+    		
+    		$('select[name=movie-cate] > option').text(title);
+    		
+    		var select_movie = $('select[name=movie-cate]');
+    		
+    		var select_cinema = $('select[name=cinema-cate]');
+    						
+    		var select_date = $('select[name=date-cate]');
+    		
+    		var select_time = $('select[name=time-cate]');
+    		
+    		$.get('/TheJoenMovie/getMovieCate',function(data){
+    			select_movie.empty();
+    			if(title == null){
+    				select_movie.append("<option value='0'> 영화 선택 </option>");
+    				$('.movie-value').text('영화를 선택해주세요.');
+    				$.each(data, function(i,vo){
+        				
+        				select_movie.append("<option value='"+vo.title+"'>"+vo.title+"</option>");
+        				
+        			});
+    			}else{
+    				select_movie.append("<option value='0'>"+title+"</option>");
+    				$('.movie-value').text(title);
+    				var jsonData = {"title" : title};
+        			$.get("/TheJoenMovie/getCinemaCate",jsonData,function(data){
+        				select_cinema.empty();
+        				select_date.empty();
+        				select_time.empty();
+        				select_cinema.append("<option value='0'> 영화관 선택 </option>");
+        				select_date.append("<option value='0'> 날짜 선택 </option>");
+        				select_time.append("<option value='0'> 시간 선택 </option>");
+        				
+        				$.each(data, function(i,vo){
+        					select_cinema.append("<option value='"+vo.cinema_name+"'>"+vo.cinema_name+"</option>");
+        				});
+        			});
+    			}
+    		});
+    		select_movie.change(function(){
+    			var temp = $(this).val();
+    			$('.movie-value').text(temp);
+    			$('.cinema-value').text('영화관을 선택해주세요.');
+    			$('.date-value').text('날짜를 선택해주세요.');
+    			$('.time-value').text('시간읊 선택해주세요.');
+    			var jsonData = {"title" : temp};
+    			$.get("/TheJoenMovie/getCinemaCate",jsonData,function(data){
+    				select_cinema.empty();
+    				select_date.empty();
+    				select_time.empty();
+    				select_cinema.append("<option value='0'> 영화관 선택 </option>");
+    				select_date.append("<option value='0'> 날짜 선택 </option>");
+    				select_time.append("<option value='0'> 시간 선택 </option>");
+    				
+    				$.each(data, function(i,vo){
+    					select_cinema.append("<option value='"+vo.cinema_name+"'>"+vo.cinema_name+"</option>");
+    				});
+    			});
+    		});
+    		var cinema_name = '영화관을 선택해주세요.';
+    		select_cinema.change(function(){
+    			cinema_name = $(this).val();
+    			$('.cinema-value').text(cinema_name);
+    			$('.date-value').text('날짜를 선택해주세요.');
+    			$('.time-value').text('시간을 선택해주세요.');
+    			var jsonData = {"cinema_name" : cinema_name};
+    			$.get("/TheJoenMovie/getDateCate",jsonData,function(data){
+    				
+    				select_date.empty();
+    				select_time.empty();
+    				select_date.append("<option value='0'> 날짜 선택 </option>");
+    				select_time.append("<option value='0'> 시간 선택 </option>");
+    				
+    				$.each(data, function(i,vo){
+    					
+    					select_date.append("<option value='"+vo.date+"'>"+ vo.date + "</option>");
+    				});
+    				
+    			});
+    		});
+    		
+    		select_date.change(function(){
+    			var date = $(this).val();
+    			$('.date-value').text(date);
+    			$('.time-value').text('시간을 선택해주세요.');
+    			var jsonData = {
+    				"date" : date,
+    				"cinema_name": cinema_name
+    			};
+    			$.get("/TheJoenMovie/getTimeCate",jsonData,function(data){
+    				
+    				select_time.empty();
+    				select_time.append("<option value='0'> 시간 선택 </option>");
+    				
+    				$.each(data, function(i,vo){
+    					
+    					select_time.append("<option value='"+vo.time_start+"'>"+ vo.time_start + "</option>");
+    				});
+    				
+    			});
+    		});
+    		
+    		select_time.change(function(){
+    			/* 시간을 선택할 때마다 초기화해주고 다시 해당 조건들의 데이터를 전송해주어야합니다.*/
+    			$('input[type=checkbox]').attr('disabled',false);
+    			$('table tbody tr td').attr('class','bookable');
+    			
+    			
+    			var time = $(this).val();
+    			$('.time-value').text(time);
+    			var movie_title = $('.movie-value').text();
+    			var movie_cinema = $('.cinema-value').text();
+    			var movie_date = $('.date-value').text();
+    			var movie_time = $('.time-value').text();
+    			var jsonData = {
+    				"title": movie_title,
+    				"cinema_name": movie_cinema,
+    				"date": movie_date,
+    				"time_start": movie_time
+    			};
+    			$.ajax({
+    				url: '/TheJoenMovie/getSeats',
+    				type: 'post',
+    				data: jsonData,
+    				success: function(data){
+    					
+    					$.each(data,function(i,vo){
+    						// 예매가 되었다는 표시로 더이상 선택되지 못하게 할 것임 
+    						$('input[name="'+vo.seat+'"]').attr('disabled',true);
+    						// 예매가 되었다는 표시로 빨간색으로 표현할 것임 
+    						$('input[name="'+vo.seat+'"]').parents("td").attr('class','booked');
+    						
+    					});
+    					
+    				}
+    			});
+    		});
+    		
+    		$('.btn-danger').click(function(){
+    			
+    			var isMovieOk = true;
+    			var isCinemaOk = true;
+    		    var isDateOk = true;
+    		    var isTimeOk = true;
+    		    var isSeatsOk = true;
+    		    var movie_title = $('.movie-value').text();
+    			var movie_cinema = $('.cinema-value').text();
+    			var movie_date = $('.date-value').text();
+    			var movie_time = $('.time-value').text();
+    			var movie_seats = $('.seat-value').text();
+    		    
+    		    var movie_price = parseInt($('.price-value').text().replace(/(,|원)/g, ''));
+    			if(movie_title === '영화를 선택해주세요.'){
+    				isMovieOk = false;
+    			}
+    			if(movie_cinema === "영화관을 선택해주세요."){
+    				isCinemaOk = false;
+    			}
+    			if(movie_date === "날짜를 선택해주세요."){
+    				isDateOk = false;
+    			}
+    			if(movie_time === "시간을 선택해주세요."){
+    				isTimeOk = false;
+    			}
+    			if(movie_seats === "좌석을 선택해주세요."){
+    				isSeatsOk = false;
+    			}
+    			//var movie_price = parseInt($('.price-value').text().replace(/(,|원)/g, ''));
+    			
+    			if((isCinemaOk && isMovieOk && isDateOk && isTimeOk && isSeatsOk) === false){
+    				alert('티켓정보를 모두 입력하셔야 예매가 가능합니다.');
+    				return false;
+    			}
+    			
+    			var chkArray = new Array();
+    			$('input[type="checkBox"]:checked').each(function(){
+    				chkArray.push(this.value);
+    				
+    			});
+    			var jsonData = {
+    					"movie_title": movie_title,
+    					"movie_cinema": movie_cinema,
+    					"movie_date": movie_date,
+    					"movie_time": movie_time,
+    					"movie_seats": movie_seats,
+    					"movie_price": movie_price	
+    			};
+    			var jsonData2 = {
+    					"title": movie_title,
+    					"cinema_name": movie_cinema,
+    					"date": movie_date,
+    					"time_start": movie_time,
+    					"seat": chkArray
+    			};
+    			$.ajax({
+    				url: '/TheJoenMovie/bookSeat',
+    				type: 'post',
+    				data: jsonData2,
+    				success: function(data){}
+    			});
+    			$.ajax({
+    				url: '/TheJoenMovie/bookTicket',
+    				type: 'post',
+    				data: jsonData,
+    				success: function(data){
+    					
+    					alert('예매가 완료되었습니다!');
+    					location.href='/TheJoenMovie/index';
+    				}
+    			});
+    			
+    		});
+    	});
+    	function getValue(){
+    		// 선택된 목록 가져오기 
+    		const query = 'input[type="checkbox"]:checked';
+    		const selectedEls = document.querySelectorAll(query);
+    		let result = '';
+    		let cnt = 0;
+    		selectedEls.forEach((el)=>{
+    			result += el.value + ' ';
+    			cnt += 1;
+    		});
+    		if(cnt ==  0){
+    			document.getElementById('final-seat').innerText = '좌석을 선택해주세요.';
+    			document.getElementById('final-price').innerText = '0' + '원';
+    		}else{
+    			document.getElementById('final-seat').innerText = result;
+    			document.getElementById('final-price').innerText = cnt * 12000 + '원';
+    		}
+    	}
+    </script>
+</head>
+<body>
+    <div class="body-wrap">
+		<th:block th:include="@{_header.html}"/>     
+        <main>
+            <section class="book-ticket">
+                <div class="speed-ticket-title">
+                    <h1>Speed Ticket</h1>
+                </div>
+                <div class="select select-movie">
+                    <h1> << 영화 >> </h1>
+                    <select class="cate" name="movie-cate">
+						<option value="0">영화 선택</option>
+                    </select>
+
+                </div>
+                <div class="select select-cinema">
+                    <h1><< 영화관 >> </h1>
+                    <select class="cate" name="cinema-cate">
+                    	
+                        <option value="0">영화관 선택</option>
+                    </select>
+
+                </div>
+                
+                <div class="select select-date">
+                    <h1><< 날짜 >> </h1>
+                    <select class="cate" name="date-cate">
+                        <option value="0">날짜 선택</option>
+                    </select>
+
+                </div>
+                <div class="select select-time">
+                    <h1><< 시간 >> </h1>
+                    <select class="cate" name="time-cate">
+                        <option value="0">시간 선택</option>
+                    </select>
+
+                </div>
+                <div class="select select-seat">
+                    
+                    <div class="screen-area">
+                        <h1>Screen</h1>
+                    </div>
+                    <div class="check-seats">
+                    	<table>
+                     		<th:block th:each="num: ${#numbers.sequence(1, 13)}">
+                     			<tr>
+									<td>
+										<p th:if="${num == 1}" class="A" th:value="A">A</p>
+										<p th:if="${num == 2}" class="B" th:value="B">B</p>
+										<p th:if="${num == 3}" class="C" th:value="C">C</p>
+										<p th:if="${num == 4}" class="D" th:value="D">D</p>
+										<p th:if="${num == 5}" class="E" th:value="E">E</p>
+										<p th:if="${num == 6}" class="F" th:value="F">F</p>
+										<p th:if="${num == 7}" class="G" th:value="G">G</p>
+										<p th:if="${num == 8}" class="H" th:value="H">H</p>
+										<p th:if="${num == 9}" class="I" th:value="I">I</p>
+										<p th:if="${num == 10}" class="J" th:value="J">J</p>
+										<p th:if="${num == 11}" class="K" th:value="K">K</p>
+										<p th:if="${num == 12}" class="L" th:value="L">L</p>
+										<p th:if="${num == 13}" class="M" th:value="M">M</p>
+									</td>
+									<th:block th:each="j: ${#numbers.sequence(1, 15)}">
+										<th:block th:if="${num == 1}">
+											<td  class="bookable"  th:with="seatInit='A'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()"class="seat" th:name="|${seatInit}${j}|"
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 2}">
+											<td  class="bookable"  th:with="seatInit='B'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 3}">
+											<td  class="bookable"  th:with="seatInit='C'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 4}">
+											<td  class="bookable"  th:with="seatInit='D'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 5}">
+											<td  class="bookable"  th:with="seatInit='E'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 6}">
+											<td  class="bookable"  th:with="seatInit='F'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 7}">
+											<td  class="bookable"  th:with="seatInit='G'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 8}">
+											<td  class="bookable"  th:with="seatInit='H'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 9}">
+											<td  class="bookable"  th:with="seatInit='I'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 10}">
+											<td  class="bookable"  th:with="seatInit='J'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 11}">
+											<td  class="bookable"  th:with="seatInit='K'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 12}">
+											<td  class="bookable"  th:with="seatInit='L'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">&nbsp;[[${j}]]&nbsp;
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td></td>
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td></td>
+											</th:block>
+										</th:block>
+										<th:block th:if="${num == 13}">
+											<td  class="bookable"  th:with="seatInit='M'">
+												<label th:for="|seat${(num-1)*15 + j}|">
+													<input type="checkBox" onclick="getValue()" class="seat" th:name="|${seatInit}${j}|"
+													
+													th:id="|seat${(num-1)*15 + j}|" th:value="|${seatInit}${j}|">[[${j}]]
+												</label>
+											</td>
+											<th:block th:if="${j == 4}">
+												<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+												
+												
+											</th:block>
+											<th:block th:if="${j == 11}">
+												<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+											</th:block>
+										</th:block>
+									</th:block>
+								</tr>
+                     	</th:block>
+                    </div>
+                </div>
+            </section>
+            
+            
+            
+            <div class="final-pay">
+                <h1 class="final-title"> 예매내역 </h1>
+                
+                <div class="final-cate final-movie">
+                    <span class="title movie-title"> 영화 </span>
+                    <span class="value movie-value">영화를 선택해주세요.</span>
+
+                </div>
+                
+                <div class="final-cate final-cinema">
+                    <span class="title cinema-title"> 영화관 </span>
+                    <span class="value cinema-value">영화관을 선택해주세요.</span>
+
+                </div>
+                
+                <div class="final-cate final-date">
+                    <span class="title date-title"> 날짜 </span>
+                    <span class="value date-value">날짜를 선택해주세요.</span>
+
+                </div>
+                <div class="final-cate final-time">
+                    <span class="title time-title"> 시간 </span>
+                    <span class="value time-value">시간을 선택해주세요.</span>
+
+                </div>
+                
+                <div class="final-cate final-seats">
+                    <span class="title seat-title"> 좌석 </span>
+                    <span id="final-seat" class="value seat-value">좌석을 선택해주세요.</span>
+
+                </div>
+                <div class="final-cate final-total">
+                    <span class="title price-title"> 가격 </span>
+                    <span id="final-price" class="value price-value">0원</span>
+                </div>
+                
+                <div class="book-ticket">
+                        <button type="button" class="btn btn-danger">예매하기</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>

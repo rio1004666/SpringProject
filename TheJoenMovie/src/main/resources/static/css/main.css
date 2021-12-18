@@ -1,0 +1,169 @@
+*{
+    margin:0;
+    padding:0;
+    border:0;
+    font-size: 12px;
+    color: black;
+    top: 0px;
+
+}
+ul,ol{
+    list-style: none;
+
+}
+a{
+    text-decoration: none;
+}
+body{
+    
+    height: 2000px;
+    background-color: #FFFF 
+}
+
+/* 검색창 스타일링 */
+main > section > #search{
+    position: absolute;
+    top: 590px;
+    left: 700px;
+}
+main > section > #search > input[name=keyword]{
+    
+    width: 400px;
+    height: 50px;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid black;
+    margin-left: 240px;
+    margin-top: -50px;
+}
+main > section > #search > button{
+    position: absolute;
+    top: 0px;
+    width: 60px;
+    height: 52px;
+    border: 1px solid black;
+    margin-top: -23px;
+}
+
+
+/* 슬라이더 영역 */
+.slider {
+    position:absolute;
+
+    top:660px;
+    left: 700px;
+    width: 900px;
+    height: 800px;
+    overflow: hidden;
+
+    
+}
+.slider img{
+    width: 101%;
+    height: 691px;
+}
+.slider > .bx-wrapper {
+    -moz-box-shadow: none;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border: none;
+    background: #fff;
+}
+
+
+
+
+/* 메인 박스오피스 영화 TOP 10 */
+
+main > section {
+    
+    width: 1900px;
+    height: 200px;
+    
+}
+
+main > section > .rank{
+    width: 1900px;
+    height: auto;
+    overflow: hidden;
+    margin-top: 1000px;
+    margin-left: 200px;
+    
+    
+}
+main  > section > .rank > h1{
+	color: black;
+    font-size: 70px;
+    font-family: fantasy;
+    text-align: center;
+    margin-bottom: 50px;
+    font-weight: bold;
+}
+
+main > section > section > article {
+
+    float: left;
+    margin-top: 40px;
+    padding: 0px 65px;
+}
+
+
+/* 관람평 이미지*/
+
+main > section > section > article .rank-movie-image > img{
+    width: 250px;
+    height: 400px;
+}
+
+h1.rating{
+
+    
+    width: 160px;
+    height: 20px;
+    font-size: 0px;
+    background-image: url(./img/rating-star.png);
+    background-repeat: no-repeat;
+    background-position: 26px 0px;
+    
+}
+h1.rating.star5 {
+    margin-top: 20px;
+    background-position: 70px -160px;
+}
+
+
+/* total movie */
+main > section > article .movie-image > img{
+    width: 250px;
+    height: 400px;
+}
+
+main > section > .total_movie{
+    width: 1900px;
+    height: auto;
+    overflow: hidden;
+    margin-top: 1000px;
+	
+    
+}
+main  > section > .total_movie > h1{
+	color: black; 
+	font-size: 70px; 
+	font-family: fantasy;
+	text-align: center;
+}
+
+main > section > article {
+
+    float: left;
+    margin-top: 40px;
+    padding: 0px 65px;
+}
+
+main > section > article > a > div > p{
+	
+	width: 250px;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}

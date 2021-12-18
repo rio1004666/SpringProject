@@ -1,0 +1,257 @@
+.container{
+    width: 100%;
+    height: 1700px;
+    margin-top: 700px;
+    
+}
+.container > .seat{}
+.container > .seat > .navi{
+    width: 100%;
+    height: 200px;
+  
+}
+
+.container > .seat > .seat-list{
+    width: 100%;
+    height: 1300px;
+    
+    
+}
+.section.section-movie{
+    float:left;
+    width: 33%;
+    height: 54px;
+    
+    box-sizing: border-box;
+}
+
+.section.section-movie .col-head .movie-tab{
+    font-size: 40px;
+    text-align: center;
+    color: white;
+}
+.section.section-movie .col-body{
+    width: 100%;
+    height: 1230px;
+    
+    
+}
+.section.section-theater{
+    float:left;
+    width: 33%;
+    height: 54px;
+    border: 2px solid white;
+    box-sizing: border-box;
+}
+
+.section.section-theater .col-head .movie-tab{
+    
+    font-size: 40px;
+    text-align: center;
+    color: white;
+}
+.section.section-theater .col-body{
+    width: 100%;
+    height: 1230px;
+    
+    
+}
+
+.section.section-time{
+    float:left;
+    width: 33%;
+    height: 54px;
+    border: 2px solid white;
+    box-sizing: border-box;
+}
+.section.section-time .col-head .movie-tab{
+    font-size: 40px;
+    text-align: center;
+    color: white;
+}
+.section.section-time .col-body{
+    width: 100%;
+    height: 1230px;
+    
+    
+}
+
+
+
+/* 빠른예매 영화 선택*/
+#speed-ticket{
+    font-size: 60px;
+    
+
+    margin-top: 60px;
+
+    margin-left: 600px;
+}
+
+.section.section-movie > .col-body > .movie-select > .movie-list > ul > li{
+    width:100%;
+    height: 120px;
+    border: 1px solid white;
+}
+
+.section.section-movie > .col-body > .movie-select > .movie-list > ul > li > a > .text{
+    display: block;
+    font-size: 30px;
+    text-align: center;
+    margin-top: 36px;
+    color: white;
+}
+
+.section.section-movie > .col-body > .movie-select > .movie-list > ul > li > a > .icon{
+    display: inline-block;
+    zoom: 1;
+    width: 32px;
+    height: 42px;
+    position: absolute;
+    margin-top: 40px;
+    left:80px;
+    background-repeat: no-repeat;
+    background-image: url(http://img.cgv.co.kr/CGV_RIA/Ticket/image/reservation/icon/icon_ratings2.png);
+    
+    
+}
+
+
+
+/* 빠른예매 극장선택 */
+
+.section.section-theater > .col-body > .theater-select > .theater-list > ul > li{
+    width: 50%;
+    height: 120px;
+    border: 1px solid white;
+}
+.section.section-theater > .col-body > .theater-select > .theater-list > ul > li > ul{
+
+    display: none;
+}
+
+.section.section-theater > .col-body > .theater-select > .theater-list > ul > li > a > .text{
+  display: block;
+  margin-top: 36px;
+  font-size: 30px;
+  color: white;
+  text-align: center;
+}
+.section.section-theater > .col-body > .theater-select > .theater-list > ul > li .area-theater-list ul{
+    display: none;
+
+}
+
+.section.section-theater > .col-body > .theater-select > .theater-list > ul > li .area-theater-list ul li a{
+    color: white;
+
+}
+.section.section-theater > .col-body > .theater-select > .theater-list > ul > li > a:hover + .area-theater-list ul{
+
+    display: block;
+
+    color:wheat;
+}
+
+.section.section-theater > .col-body > .theater-select > .theater-list > ul{
+
+    position: relative;
+}
+.section.section-theater > .col-body > .theater-select > .theater-list > ul > li
+{
+    float:left;
+    
+}
+
+.section.section-theater > .col-body > .theater-select > .theater-list > ul > ul{
+    position: absolute;
+
+    top:0px;
+    left: 250px;
+    float:left;
+
+    width: 240px;
+    height: 120px;
+    border: 1px solid white;
+}
+.section.section-theater > .col-body > .theater-select > .theater-list > ul ul > li{
+    width: 240px;
+    height: 120px;
+    border: 1px solid white;
+}
+.section.section-theater > .col-body > .theater-select > .theater-list > ul ul > li > a{
+    display: block;
+    font-size: 30px;
+
+    text-align: center;
+
+    margin-top: 40px;
+    color: white;
+}
+
+/* 시간선택 */
+
+.section.section-time > .col-body > .time-select > .time-list > ul > li{
+
+    width:100%;
+    height: 120px;
+    border: 1px solid white;
+
+}
+
+.section.section-time > .col-body > .time-select > .time-list > ul > li > a > .text{
+
+    display: block;
+    font-size: 30px;
+    text-align: center;
+    margin-top: 36px;
+    color: white;
+
+}
+ /* 인원 선택 영역*/
+ .number-select {
+    width: 100%;
+    height: 140px;
+    
+    margin: 0 auto;
+    
+}
+
+
+/*    최종 선택 확인    */
+.final-selected{
+    width: 1300px;
+    height: 100px;
+    
+    margin-left:100px;
+    margin-top:100px;
+}
+.final-selected > div{
+    float: left;
+    margin-left: 40px;
+}
+.final-selected > div > h1 {
+    color: white;
+    font-size: 40px;
+}
+/* 좌석선택 버튼 css*/
+.seat-area{
+    width: 300px;
+    height: 80px;
+    font-size: 30px;
+    
+    margin: 0 auto;
+    
+}
+.seat-area > button.go-seat{
+    width: 300px;
+    height: 80px;
+    font-size: 30px;
+}
+.seat-area > button.go-seat:hover{
+    background-color: rgb(101, 236, 108);
+}
+.seat-area > button.go-seat:active{
+    box-shadow: inset -2px -2px 3px rgba(255, 255, 255, .6),
+                inset 2px 2px 3px rgba(0, 0, 0, .6);
+}

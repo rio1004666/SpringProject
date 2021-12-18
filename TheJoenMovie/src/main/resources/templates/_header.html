@@ -1,0 +1,39 @@
+ <header id="header">
+    <a th:href="@{/}" title="더조은무비 메인으로가기">
+    <img th:src="@{/img/logo_image.png}" class="logo" alt="로고"/>
+    </a>
+    <img th:src="@{/img/disneychristmas.png}" alt="헤더 이미지" class="headerimg"/>
+    <nav id="gnb">
+        <div class="main-menu">
+            <ul class="menu-depth1">
+                <li>
+                    <a th:href="@{/view_total_movie}">
+                        <img th:src="@{/img/movie_menu01.png}">
+                        <h1 class="menu-title">영화</h1>
+                    </a>
+                    
+                </li>
+                <li>
+                    <a th:href="@{/book_ticket}">
+                        <img th:src="@{/img/ticket_menu01.png}">
+                        <h1 class="menu-title">예매</h1>
+                    </a>
+                
+                </li>
+                <li>
+                    <a th:href="@{/view_event}">
+                        <img th:src="@{/img/event_menu02.png}" style="margin-left:20px;">
+                        <h1 class="menu-title">이벤트</h1>
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/member/login?success=104}">
+                        <img th:src="@{/img/login_image.png}" style="margin-left:10px;">
+                        <h1 class="menu-title">멤버쉽</h1>
+                    </a>
+                </li>
+            </ul>              
+        </div>
+    </nav>
+</header>
+          

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheJoen Movie</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    
+    <link rel="stylesheet" href="../css/main.css"/>
+    <link rel="stylesheet" href="../css/header.css"/>
+    <link rel="stylesheet" href="../css/register.css"/>
+    <script>
+        $(function(){
+            // 아이디 중복체크
+            $('input[name=uid]').focusout(function(){
+                
+                var uid = $(this).val();
+                
+                $.ajax({
+                    url:'/Jboard2/user/checkUid.do?uid='+uid,
+                    type:'get',
+                    dataType:'json',
+                    success:function(data){
+                        alert(data.result);
+                    }    				
+                });
+            });
+    		
+    		// 비밀번호 유효성 검사
+    		$('input[name=pass2]').focusout(function(){
+				var pass1 = $('input[name=pass1]').val();
+				var pass2 = $('input[name=pass2]').val();
+				
+				if(pass1 == pass2){
+					$('.resultPass').css('color','green').text('비밀번호가 일치합니다.');
+				}else{
+					$('.resultPass').css('color','red').text('비밀번호가 일치하지 않습니다.');
+				}
+			});
+		});
+    		// 이름 유효성 검사
+        $('input[name=name]').focusout(function(){
+            var name = $(this).val();
+            $.ajax({
+                url:'/Jboard2/user/checkName.do?name='+name,
+                type:'get',
+                dataType:'json',
+                success: function(data){
+                    alert(data.result);
+                }
+            });
+        });
+    		// 닉네임 중복체크
+    		// 이메일 중복체크
+    		// 휴대폰 중복체크
+        $(document).ready(function(){
+            $('.slider > ul').bxSlider({
+                pager: false,
+                easing: 'linear',
+                auto: true, // 슬라이더 자동여부 
+
+                autoHover: true // 마우스를 위에 올렸을 경우 애니메이션 정지 
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <div class="body-wrap">
+        <header id="header">
+            <h1 class="ci">
+    
+                <a href="../index.html" title="더조은무비 메인으로가기">
+                    <img src="../img/logo_image.png">
+                </a>
+            </h1>
+            <nav id="gnb">
+                <div class="main-menu">
+                    <ul class="menu-depth1">
+                        <li>
+                            <a th:href="@{/view_total_movie}">
+                                <img th:src="@{/img/movie_menu01.png}">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">영화</h1>
+                            </a>
+                            
+                        </li>
+                        <li>
+                            <a th:href="@{/book_ticket}">
+                                <img th:src="@{/img/ticket_menu01.png}">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">예매</h1>
+                            </a>
+                        
+                        </li>
+                        <li>
+                            <a th:href="@{/view_event}">
+                                <img th:src="@{/img/event_menu02.png}" style="margin-left:20px;">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">이벤트</h1>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/member/login}">
+                                <img th:src="@{/img/login_image.png}" style="margin-left:10px;">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">멤버쉽</h1>
+                            </a>
+                        </li>
+                    </ul>              
+                </div>
+
+            </nav>
+            
+        </header>
+        
+        <section id="member" class="register">
+            <form action="./register.html" method="POST">
+                <table border="1">
+                    <caption>사이트 이용정보 입력</caption>
+                    <tr>
+                        <td>아이디</td>
+                        <td>
+                            <input type="text" name="uid" placeholder="아이디 입력"/>
+                            <span class="resultId"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>비밀번호</td>
+                        <td>
+                            <input type="password" name="pass1" placeholder="비밀번호 입력"/>                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>비밀번호 확인</td>
+                        <td>
+                            <input type="password" name="pass2" placeholder="비밀번호 확인 입력"/>
+                            <span class="resultPass"></span>
+                        </td>
+                    </tr>
+                </table>
+                <table border="1">
+                    <caption>개인정보 입력</caption>
+                    <tr>
+                        <td>이름</td>
+                        <td>
+                            <input type="text" name="name" placeholder="이름 입력"/>                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>별명</td>
+                        <td>
+                            <p>공백없이 한글, 영문, 숫자만 입력가능</p>
+                            <input type="text" name="nick" placeholder="별명 입력"/>
+                            <span class="resultNick"></span>                            
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>E-Mail</td>
+                        <td>
+                            <input type="email" name="email" placeholder="이메일 입력"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>휴대폰</td>
+                        <td>
+                            <input type="text" name="hp" placeholder="- 포함 13자리 입력" minlength="13" maxlength="13" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>가입경로</td>
+                        <td style="color: ivory;">
+                            <ul class="register-path">
+                                <li>
+                                    <h1>검색</h1>
+                                    <input style="zoom: 1;" type="checkbox" name="search" />
+                                </li>
+                                <li>
+                                    <h1>지인추천</h1><input style="zoom: 1;" type="checkbox" name="search" />
+                                </li>
+                                <li>
+                                    <h1>SNS</h1><input style="zoom: 1;" type="checkbox" name="search" />
+                                </li>
+                                <li>
+                                    <h1>광고</h1><input style="zoom: 1;" type="checkbox" name="search" />
+                                </li>
+                            </ul>
+                        </td>
+                        
+                    </tr>
+                    <tr>
+                        <td>추천인</td>
+                        <td>
+                            <p>공백없이 한글만 입력가능</p>
+                            <input type="text" name="reco" placeholder="추천인 입력"/>
+                            <span class="resultReco"></span>                            
+                        </td>
+                    </tr>
+                </table>
+
+                <div>
+                    <a th:href="@{/member/login}" class="btnCancel">취소</a>
+                    <input type="submit"   class="btnJoin" value="회원가입"/>
+                </div>
+
+            </form>
+        </section>
+
+    </div>
+    
+</body>
+</html>

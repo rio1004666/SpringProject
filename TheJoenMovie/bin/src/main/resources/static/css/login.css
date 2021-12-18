@@ -1,0 +1,60 @@
+#header-img{
+    width: 51%;
+    height: 274px;
+    margin-top: 40px;
+    margin-right: 395px;
+    border: 1px solid black;
+    float: right;
+} 
+#user {}
+#user.login {
+    width: 300px;
+    height: 400px;
+    margin: 300px 800px;           
+}
+#user.login > form {
+    position: relative;
+    padding: 20px 20px 20px 50px;
+    border: 1px solid #cfded8;
+    background: #fff;
+    margin-top: 20px;
+    border-bottom: 0;
+}
+
+#user.login > form > table img {
+    width: 20px;
+}
+#user.login > form > table input {
+    width: 162px;
+    height: 22px;
+    margin: 0 0 5px 0;
+    border: 1px solid #e4eaec;
+    background: #f7f7f7;
+    color: #111;            
+}
+#user.login > form > input[type=submit] {
+    position: absolute;
+    right: 52px;
+    top: 22px;
+    width: 60px;
+    height: 55px;
+    padding: 8px;
+    border: 1px solid #bebebe;
+    background: #fdfdfd;
+    color: #111;
+}
+
+#user.login > .info {
+    margin-bottom: 30px;
+    padding: 20px;
+    border: 1px solid #cfded8;
+    background: #f5f6fa;
+    overflow: hidden;
+}
+
+#user.login > .info > p {
+    padding: 10px 0;
+}
+#user.login > .info > a {
+    float: right;
+}

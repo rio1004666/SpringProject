@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheJoen Movie</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="../css/header.css"/>
+    <link rel="stylesheet" href="../css/terms.css"/>
+
+    <script>
+        $(document).ready(function(){
+            $('.slider > ul').bxSlider({
+                pager: false,
+                easing: 'linear',
+                auto: true, // 슬라이더 자동여부 
+
+                autoHover: true // 마우스를 위에 올렸을 경우 애니메이션 정지 
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){
+            
+            var btnNext = $('.terms > div > a:nth-child(2)');
+            
+            btnNext.click(function(){
+                
+                var isChecked1 = $('input[name=chk1]').is(':checked');
+                var isChecked2 = $('input[name=chk2]').is(':checked');
+                
+                if(!isChecked1 || !isChecked2){
+                    alert('동의 체크를 하셔야 합니다.');
+                    return false;
+                }else{
+                    return true;	
+                }
+            });
+        });
+    </script>
+
+</head>
+<body>
+    <div class="body-wrap">
+        <header id="header">
+            <h1 class="ci">
+    
+                <a href="../index.html" title="더조은무비 메인으로가기">
+                    <img src="../img/logo_image.png">
+                </a>
+            </h1>
+            <nav id="gnb">
+                <div class="main-menu">
+                    <ul class="menu-depth1">
+                        <li>
+                            <a th:href="@{/view_total_movie}">
+                                <img th:src="@{/img/movie_menu01.png}">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">영화</h1>
+                            </a>
+                            
+                        </li>
+                        <li>
+                            <a th:href="@{/book_ticket}">
+                                <img th:src="@{/img/ticket_menu01.png}">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">예매</h1>
+                            </a>
+                        
+                        </li>
+                        <li>
+                            <a th:href="@{/view_event}">
+                                <img th:src="@{/img/event_menu02.png}" style="margin-left:20px;">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">이벤트</h1>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/member/login}">
+                                <img th:src="@{/img/login_image.png}" style="margin-left:10px;">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">멤버쉽</h1>
+                            </a>
+                        </li>
+                    </ul>              
+                </div>
+
+
+
+            </nav>
+            
+        </header>
+
+        <main>
+            <section id="member" class="terms">
+                <table>
+                    <caption>사이트 이용약관</caption>
+                    <tr>
+                        <td>
+                            <textarea readonly>더조은 무비는 수시로 본 약관, 계정 및 게시물 운영정책을 개정할 수 있습니다만, 관련 법령을 위배하지 않는 범위 내에서 개정할 것이며, 사전에 그 개정 이유와 적용 일자를 서비스 내에 알리도록 하겠습니다. 또한 여러분에게 불리할 수 있는 중대한 내용의 약관 변경의 경우에는 최소 30일 이전에 해당 서비스 내 공지하고 별도의 전자적 수단(전자메일, 서비스 내 알림 등)을 통해 개별적으로 알릴 것입니다.</textarea>
+                        <p>
+                            <label><input style="zoom: 2;" type="checkbox" name="chk1"/>동의합니다.
+                            <span>(필수)</span>
+                            </label>
+                        </p>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <caption>개인정보 취급방침</caption>
+                    <tr>
+                        <td>
+                            <textarea readonly>개인정보보호법에 따라 네이버에 회원가입 신청하시는 분께 수집하는 개인정보의 항목, 개인정보의 수집 및 이용목적, 개인정보의 보유 및 이용기간, 동의 거부권 및 동의 거부 시 불이익에 관한 사항을 안내 드리오니 자세히 읽은 후 동의하여 주시기 바랍니다</textarea>
+                        <p>
+                            <label><input style="zoom: 2;" type="checkbox" name="chk2"/>동의합니다.
+                                <span>(필수)</span>
+                            </label>     
+                        </p>
+                        </td>
+                    </tr>
+                </table>
+                <table>
+                    <caption>개인정보 수집 및 이용</caption>
+                    <tr>
+                        <td>
+                            <textarea readonly>이용자는 회원가입을 하지 않아도 정보 검색, 뉴스 보기 등 대부분의 네이버 서비스를 회원과 동일하게 이용할 수 있습니다. 이용자가 메일, 캘린더, 카페, 블로그 등과 같이 개인화 혹은 회원제 서비스를 이용하기 위해 회원가입을 할 경우, 네이버는 서비스 이용을 위해 필요한 최소한의 개인정보를 수집합니다.
+                            </textarea>
+                        <p>
+                            <label><input style="zoom: 2;" type="checkbox" name="chk3"/>동의합니다.(선택)</label>
+                        </p>
+                        </td>
+                    </tr>
+                </table>
+                <div>
+                    <a style="zoom: 3.5;" th:href="@{/member/login}">취소</a>
+                    <a style="zoom: 3.5;" th:href="@{/member/register}">다음</a>
+                </div>
+            </section>
+        </main>
+        
+    </div>
+    
+</body>
+</html>

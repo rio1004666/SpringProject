@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheJoen Movie</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/login.css}"/>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <style>
+            
+        
+        main  #mb-4{   
+            width: 850px;
+            height: 450px;
+            margin: 50px -250px;
+            
+        }
+        #user.login h1{
+        	font-size: 52px; 
+        	text-align: center;
+        }
+    </style>
+	<script th:inline="javascript">
+		var success = [[${success}]];
+		if(success == '101'){
+			alert('아이디와 비밀번호를 확인해주세요.');
+		}
+	</script>
+
+</head>
+<body>
+    <div class="body-wrap">
+        <th:block th:include="@{_header.html}"/>
+        <main>
+            <section id="user" class="login">
+                <h1>로그인</h1>
+                <form th:action="@{/member/login}" method="POST">
+                    <table border="0">
+                        <tr>
+                            <td><img th:src="@{/img/login_ico_id.png}" alt="아이디"/></td>
+                            <td><input type="text" name="uid" placeholder="아이디를 입력" /></td>
+                        </tr>
+                        <tr>
+                            <td><img th:src="@{/img/login_ico_pw.png}" alt="비밀번호"/></td>
+                            <td><input type="password" name="pass" placeholder="비밀번호 입력" /></td>
+                        </tr>
+                    </table>
+                    <input type="submit" class="btnLogin" value="로그인"/>
+                </form>
+                <div class="info">
+                    <h3>회원로그인 안내</h3>
+                    <p>
+                        아직 회원이 아니시면 회원으로 가입하세요.
+                    </p>
+                    <a th:href="@{/member/terms}">회원가입</a>
+                </div>
+                <div>
+                    <img id="mb-4" src= "../img/lalaland.jpg" alt="로그인" >
+                </div>
+            </section>
+            
+        </main>
+    </div>
+</body>
+</html>
+

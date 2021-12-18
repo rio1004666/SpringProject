@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheJoen Movie</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" href="../css/header.css"/>
+    <link rel="stylesheet" href="../css/main.css"/>
+    <link rel="stylesheet" href="../css/login.css"/>
+    <style>
+            
+        
+        main  #mb-4{   
+            width: 850px;
+            height: 450px;
+            margin: 50px -250px;
+            
+        }
+    </style>
+
+
+</head>
+<body>
+    <div class="body-wrap">
+        <header id="header">
+            <h1 class="ci">
+    
+                <a href="/" title="더조은무비 메인으로가기">
+                    <img src="/img/logo_image.png">
+                </a>
+            </h1>
+            <nav id="gnb">
+                <div class="main-menu">
+                    <ul class="menu-depth1">
+                        <li>
+                            <a th:href="@{/view_total_movie}">
+                                <img th:src="@{/img/movie_menu01.png}">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">영화</h1>
+                            </a>
+                            
+                        </li>
+                        <li>
+                            <a th:href="@{/book_ticket}">
+                                <img th:src="@{/img/ticket_menu01.png}">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">예매</h1>
+                            </a>
+                        
+                        </li>
+                        <li>
+                            <a th:href="@{/view_event}">
+                                <img th:src="@{/img/event_menu02.png}" style="margin-left:20px;">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">이벤트</h1>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/member/login}">
+                                <img th:src="@{/img/login_image.png}" style="margin-left:10px;">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">멤버쉽</h1>
+                            </a>
+                        </li>
+                    </ul>              
+                </div>
+            </nav>
+            
+        </header>
+    
+        <img id="header-img" src="../img/disneychristmas.png" alt="">
+        <main>
+            <section id="user" class="login">
+                <h1 style="font-size: 30px; text-align: center;">로그인</h1>
+                <form action="../list.html">
+                    <table border="0">
+                        <tr>
+                            <td><img src="../img/login_ico_id.png" alt="아이디"/></td>
+                            <td><input type="text" name="uid" placeholder="아이디를 입력" /></td>
+                        </tr>
+                        <tr>
+                            <td><img src="../img/login_ico_pw.png" alt="비밀번호"/></td>
+                            <td><input type="password" name="pass" placeholder="비밀번호 입력" /></td>
+                        </tr>
+                    </table>
+                    <input type="submit" class="btnLogin" value="로그인"/>
+                </form>
+                <div class="info">
+                    <h3>회원로그인 안내</h3>
+                    <p>
+                        아직 회원이 아니시면 회원으로 가입하세요.
+                    </p>
+                    <a th:href="@{/member/terms}">회원가입</a>
+                </div>
+                <div>
+                    <img id="mb-4" src= "../img/lalaland.jpg" alt="로그인" >
+                </div>
+            </section>
+            
+        </main>
+    </div>
+</body>
+</html>
+

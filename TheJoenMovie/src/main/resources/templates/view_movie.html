@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TheJoen Movie</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" th:href="@{/css/main.css}"/>
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/movie.css}"/>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script>
+        $(document).ready(function(){
+            $('.slider > ul').bxSlider({
+                pager: false,
+                easing: 'linear',
+                auto: true, // 슬라이더 자동여부 
+
+                autoHover: true // 마우스를 위에 올렸을 경우 애니메이션 정지 
+            });
+       });
+    </script>
+    
+    <script>
+	    $(function(){
+			$('.btn-danger').click(function(){
+				    	
+			    	var title = $('.movie-title').text();
+			    	
+			    	var jsonData = {"title":title};
+			    	
+			    	$.ajax({
+			    		url: '/TheJoenMovie/goTicket',
+			    		type: 'post',
+			    		data: jsonData,
+			    		dataType: 'json',
+			    		success:function(data){
+			    			
+			    			location.href='/TheJoenMovie/book_ticket?title='+data.result;
+			    		
+			    		}
+			    	});	
+			    });
+	    });
+	    
+    </script>
+    <style>
+        .btn.btn-danger{
+            width:230px;
+            height: 40px;
+            font-size: 20px;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="body-wrap">
+		<th:block th:include="@{_header.html}"/>
+	    <main>
+	        <section>
+	            <div class="detail-title">
+	                <h1>영화상세</h1>
+	                <hr>
+	            </div>
+	            <div class="detail-image">
+                	<img class="movie_poster" th:src="@{/img/{poster}(poster=${movie.poster})}">
+	            </div>
+	            
+	            <div class="detail-contents">
+	                <span class="movie-title">[[${movie.title}]]</span>
+	                <span class="current-movie">현재상영중</span>
+	                <div id="movie-director">감독: <p> [[${movie.director}]] </p></div> 
+	                <div id="movie-actor">배우: <p> [[${movie.actor}]] </p></div> 
+	                <div id="movie-genre">장르: <p> [[${movie.genre}]]</p></div> 
+	                <div id="movie-open">개봉: <p> [[${movie.rdate}]]</p></div> 
+	                <div class="book-ticket">
+	                    <button type="button" class="btn btn-danger">예매하러가기</button>
+	                </div>
+	            </div>
+	            <div class="movie-content">
+	                <h1>줄거리</h1>
+	                <hr>
+	                <p>
+	                    [[${movie.story}]]
+	                </p>
+	            </div>
+	        </section>
+	        
+	    </main>
+        <article class="review">
+            <nav>
+                <h1>[[${movie.title}]]&nbsp; 리뷰</h1>
+            </nav>
+            <ul>
+                <li>
+                    <div class="movie-evaluate">
+                        <span>[[${movie.review_id}]]&nbsp; [[${movie.review_date}]]</span>
+                    </div>
+                    <h3>[[${movie.review_title}]]</h3>
+                    <p>
+                        [[${movie.review_text}]]
+                    </p>
+                </li>
+            </ul>
+        </article>
+    </div>
+</body>
+</html>

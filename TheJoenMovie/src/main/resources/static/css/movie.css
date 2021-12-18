@@ -1,0 +1,151 @@
+main > section{
+    margin: 100px auto;
+    
+}
+
+/* 占쎈쐻占쎈윪野껁깷�쐻占쎈윪占쎄섀 占쎈쐻占쎈윞筌띾�ｋ쐻占쎈윞占쎈룵 占쎈쐻占쎈윪占쎌젳占쎌녃域밟뫁�굲 */
+main > .total_movie > h1{
+	font-size: 80px;
+    font-weight: bolder;
+    margin: 70px auto;
+    width: 500px;
+	
+}
+main > section > .detail-title{
+    margin-top: 100px;
+    margin-left: 380px;
+}
+main > section > .detail-title > h1{
+    font-size: 40px;
+    
+}
+main > section > .detail-title > hr{
+    margin-top: 30px;
+    width: 1200px;
+    border: 2px solid red;
+}
+
+main > section > .detail-image > img{
+    margin-left: 380px;
+    width: 202px;
+    height: 290px;
+
+}
+main > section > .detail-contents{
+  	width: 984px;
+    height: 220px;
+    margin-left: 595px;
+    margin-top: -295px;
+}
+main > section > .detail-contents > .movie-title{
+    font-size: 30px;
+}
+main > section > .detail-contents > .current-movie{
+    font-size: 20px;
+}
+main > section > .detail-contents > div{
+    margin-top: 6px;
+    font-size: 20px;
+}
+main > section > .detail-contents > div > p{
+    display: inline;
+    font-size: 15px;
+}
+
+/* �뜝�럥�맶�뜝�럥�쑋�뇦猿곴뭍占쎌맶�뜝�럥�쑋�뜝�럡�� 嚥싳쉶瑗ч뇡癒�爾잌뜝�럥夷ⓨ뜝�럡猿숋옙�뼔�섓옙�맶占쎈쐻�뜝占� */
+
+.movie-content {
+    width: 1200px;
+    margin-top: 150px;
+    margin-left: 380px;
+}
+.movie-content > h1{
+    font-size: 30px;
+}
+.movie-content > hr{
+    border: 1px solid gray;
+    margin-top: 10px;
+}
+.movie-content > p{
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.body-wrap{
+    position: relative;
+}
+.body-wrap > .review{
+    position: absolute;
+    width: 1202px;
+    top: 1500px;
+    margin-left: 560px;
+}
+.review > nav{}
+.review > nav > h1{
+    font-size: 30px;
+}
+.review > ul{
+    margin-top: 40px;
+}
+.review > ul > li{
+    padding-top: 30px;
+}
+.review > ul > li > .movie-evaluate > h5{
+    font-size: 20px;
+}
+.review > ul > li > .movie-evaluate > span{
+    font-size: 20px;
+    color: black;
+}
+.review > ul > li > h3{
+    color: blue;
+}
+.review > ul > li >  p{
+    font-size: 20px;
+    color: red;
+}
+
+
+.paging {
+    width: 100%;
+    padding: 30px 0px;
+    text-align: center;
+    margin-top: 1282px;
+}
+.paging > span > a {
+	width: 70px;
+	height: 70px;
+    color: #777;            
+    font-size: 24px;
+    
+    letter-spacing: -1px;
+}
+
+.paging > span > a:hover {
+    text-decoration: underline;
+}
+
+.paging > .num > a {
+	
+    display: inline-block;
+    min-width: 14px;
+    margin: 0 2px;
+    padding: 8px 9px;
+    border: 1px solid #c4c4c4;
+    background: url() 0 0 repeat-x;
+    color: #000;
+    font-size: 24px;
+    text-align: center;
+    text-decoration: none;
+}
+.paging > .num > a:hover {
+    border: 1px solid #454c5f;
+    text-decoration: none;
+}
+.paging > .num > a.on {
+    color: #fe434c;
+    font-weight: bold;
+    background-color: yellow;
+}
+
+

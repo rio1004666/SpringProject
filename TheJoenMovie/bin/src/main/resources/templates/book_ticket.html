@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TheJoen Movie</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    
+    
+    <link rel="stylesheet" th:href="@{/css/header.css}"/>
+    <link rel="stylesheet" th:href="@{/css/ticket.css}"/>
+    
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script th:src="@{/js/ticket.js}"></script>
+    <script>
+        $(document).ready(function(){
+            $('.slider > ul').bxSlider({
+                pager: false,
+                easing: 'linear',
+                auto: true, // 슬라이더 자동여부 
+
+                autoHover: true // 마우스를 위에 올렸을 경우 애니메이션 정지 
+            });
+        });
+		  
+    </script>
+	
+    
+</head>
+<body>
+    <div class="body-wrap">
+        <header id="header">
+            <h1 class="ci">
+    
+                <a href="/" title="더조은무비 메인으로가기">
+                    <img src="./img/logo_image.png">
+                </a>
+            </h1>
+            <nav id="gnb">
+                <div class="main-menu">
+                    <ul class="menu-depth1">
+                       <li>
+                            <a th:href="@{/view_total_movie}">
+                                <img th:src="@{/img/movie_menu01.png}">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">영화</h1>
+                            </a>
+                            
+                        </li>
+                        <li>
+                            <a th:href="@{/book_ticket}">
+                                <img th:src="@{/img/ticket_menu01.png}">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">예매</h1>
+                            </a>
+                        
+                        </li>
+                        <li>
+                            <a th:href="@{/view_event}">
+                                <img th:src="@{/img/event_menu02.png}" style="margin-left:20px;">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">이벤트</h1>
+                            </a>
+                        </li>
+                        <li>
+                            <a th:href="@{/member/login}">
+                                <img th:src="@{/img/login_image.png}" style="margin-left:10px;">
+                                <h1 style="color:#120303;font-size:25px; text-align: center;">멤버쉽</h1>
+                            </a>
+                        </li>
+                    </ul>              
+                </div>
+            </nav>
+            
+        </header>
+        
+            
+        
+        
+            
+        
+        <main>
+            <section>
+                <div class="speed-ticket-title">
+                    <h1>Speed Ticket</h1>
+                </div>
+                <div class="select select-cinema">
+                    <h1><< 영화관 >> </h1>
+                    <select class="cate" name="cinema-cate">
+                        <option value="0">영화관 선택</option>
+                    </select>
+
+                </div>
+                <div class="select select-movie">
+                    <h1> << 영화 >> </h1>
+                    <select class="cate" name="movie-cate">
+                        
+                        <option value="0">영화 선택</option>
+                    </select>
+
+                </div>
+                <div class="select select-date">
+                    <h1><< 날짜&시간 >> </h1>
+                    <select class="cate" name="date-cate">
+                        <option value="0">날짜&시간 선택</option>
+                    </select>
+
+                </div>
+                <div class="select select-seat">
+                    
+                    <div class="screen-area">
+                        <h1>Screen</h1>
+                    </div>
+                    <div class="check-seats">
+                     
+                        <div class="no-seats">
+                        	<input class="seat0" type="text" name="1" style="border: 1px solid white;">
+                            <input class="seat1" type="text" name="1"  value="1">
+                            <input class="seat2" type="text" name="2"  value="2">
+                            <input class="seat3" type="text" name="3" value="3">
+                            <input class="seat4" type="text" name="4" value="4">
+                            <input class="seat5" type="text" name="5" value="5">
+                            <input class="seat6" type="text" name="6" value="6">
+                            <input class="seat7" type="text" name="7" value="7">
+                            <input class="seat8" type="text" name="8" value="8">
+                            <input class="seat9" type="text" name="9"  value="9">
+                            <input class="seat10" type="text" name="10" value="10">
+                        </div>
+                        <div class="A-seats">
+                            <input class="seat1" type="text" name="A" value="A">
+                            <input class="seat1" type="checkbox" name="checkSeat" value="A1" onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat" value="A2" onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat" value="A3" onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat" value="A4" onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat" value="A5" onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat" value="A6" onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat" value="A7" onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat" value="A8" onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat" value="A9" onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat" value="A10" onclick='getValue()'>
+                        </div>
+                        <div class="B-seats">
+                            <input class="seat1" type="text" name="B" value="B">
+                            <input class="seat1" type="checkbox" name="checkSeat"value="B1" onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat"value="B2" onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat"value="B3" onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat"value="B4" onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat"value="B5" onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat"value="B6" onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat"value="B7" onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat"value="B8" onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat"value="B9" onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat"value="B10" onclick='getValue()'>
+                        </div>
+                        <div class="C-seats">
+                            <input class="seat1" type="text" name="C" value="C">
+                            <input class="seat1" type="checkbox" name="checkSeat"value="C1"onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat"value="C2" onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat"value="C3"onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat"value="C4"onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat"value="C5"onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat"value="C6"onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat"value="C7"onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat"value="C8"onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat"value="C9"onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat"value="C10"onclick='getValue()'>
+                        </div>
+                        <div class="D-seats">
+                            <input class="seat1" type="text" name="D" value="D">
+                            <input class="seat1" type="checkbox" name="checkSeat"value="D1"onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat"value="D2"onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat"value="D3"onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat"value="D4"onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat"value="D5"onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat"value="D6"onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat"value="D7"onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat"value="D8"onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat"value="D9"onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat"vlaue="D10"onclick='getValue()'>
+                        </div>
+                        <div class="E-seats">
+                            <input class="seat1" type="text" name="E" value="E">
+                            <input class="seat1" type="checkbox" name="checkSeat"value="E1"onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat"value="E2"onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat"value="E3"onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat"value="E4"onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat"value="E5"onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat"value="E6"onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat"value="E7"onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat"value="E8"onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat"value="E9"onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat"value="E10"onclick='getValue()'>
+                        </div>
+                        <div class="F-seats">
+                            <input class="seat1" type="text" name="F" value="F">
+                        
+                            <input class="seat1" type="checkbox" name="checkSeat"value="F1"onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat"value="F2"onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat"value="F3"onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat"value="F4"onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat"value="F5"onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat"value="F6"onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat"value="F7"onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat"value="F8"onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat"value="F9"onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat"value="F10"onclick='getValue()'>
+                        </div>
+                        <div class="G-seats">
+                            <input class="seat1" type="text" name="G" value="G">
+                            <input class="seat1" type="checkbox" name="checkSeat"value="G1"onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat"value="G2"onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat"value="G3"onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat"value="G4"onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat"value="G5"onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat"value="G6"onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat"value="G7"onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat"value="G8"onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat"value="G9"onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat"value="G10"onclick='getValue()'>
+                        </div>
+                        <div class="H-seats">
+                            <input class="seat1" type="text" name="H" value="H">
+                            <input class="seat1" type="checkbox" name="checkSeat" value="H1"onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat" value="H2"onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat" value="H3"onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat" value="H4"onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat" value="H5"onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat" value="H6"onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat" value="H7"onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat" value="H8"onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat" value="H9"onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat" value="H10"onclick='getValue()'>
+                        </div>
+                        <div class="I-seats">
+                            <input class="seat1" type="text" name="I" value="I">
+                            <input class="seat1" type="checkbox" name="checkSeat" value="I1"onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat" value="I2"onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat" value="I3"onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat" value="I4"onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat" value="I5"onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat" value="I6"onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat" value="I7"onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat" value="I8"onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat" value="I9"onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat" value="I10"onclick='getValue()'>
+                        </div>
+                        <div class="J-seats">
+                            <input class="seat1" type="text" name="J" value="J">
+                            <input class="seat1" type="checkbox" name="checkSeat"value="J1"onclick='getValue()'>
+                            <input class="seat2" type="checkbox" name="checkSeat"value="J2"onclick='getValue()'>
+                            <input class="seat3" type="checkbox" name="checkSeat"value="J3"onclick='getValue()'>
+                            <input class="seat4" type="checkbox" name="checkSeat"value="J4"onclick='getValue()'>
+                            <input class="seat5" type="checkbox" name="checkSeat"value="J5"onclick='getValue()'>
+                            <input class="seat6" type="checkbox" name="checkSeat"value="J6"onclick='getValue()'>
+                            <input class="seat7" type="checkbox" name="checkSeat"value="J7"onclick='getValue()'>
+                            <input class="seat8" type="checkbox" name="checkSeat"value="J8"onclick='getValue()'>
+                            <input class="seat9" type="checkbox" name="checkSeat"value="J9"onclick='getValue()'>
+                            <input class="seat10" type="checkbox" name="checkSeat"value="J10"onclick='getValue()'>
+                        </div>
+
+                        
+
+                    </div>
+                
+				
+                </div>
+                
+            </section>
+            
+            
+            <div class="final-pay">
+                <h1 style="font-size: 40px; text-align: center;"> 예매내역 </h1>
+                
+                <div class="final-cate final-cinema">
+                    <span class="title cinema-title" style="font-size: 20px;"> 영화관 </span>
+                    <span class="value cinema-value" style="font-size: 20px;">영화관을 선택해주세요.</span>
+
+                </div>
+                <div class="final-cate final-movie">
+                    <span class="title movie-title"style="font-size: 20px;"> 영화 </span>
+                    <span class="value movie-value"style="font-size: 20px;">영화를 선택해주세요. </span>
+
+                </div>
+                <div class="final-cate final-date">
+                    <span class="title date-title" style="font-size: 20px;"> 날짜 </span>
+                    <span class="value date-value" style="font-size: 20px;">날짜와시간을 선택해주세요. </span>
+
+                </div>
+                
+                <div class="final-cate final-seats">
+                    <span class="title seat-title" style="font-size: 20px;"> 좌석 </span>
+                    <span id="final-seat" class="value seat-value" style="font-size: 20px;">좌석을 선택해주세요. </span>
+
+                </div>
+                <div class="final-cate final-total">
+                    <span class="title price-title" style="font-size: 20px;"> 가격 </span>
+                    <span id="final-price" class="value price-value" style="font-size: 20px;"> 0 원 </span>
+                </div>
+                
+                <div class="book-ticket">
+                        <button type="button" class="btn btn-danger">에매하기</button>
+                </div>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
