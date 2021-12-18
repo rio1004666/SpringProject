@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.farmstory.dao.MemberDao">
+  
+  <insert id="insertMember">
+  	INSERT INTO `Jboard_member` SET 
+  		`uid`=  #{uid}, 
+  		`pass`= PASSWORD(#{pass1}),
+  		`name`= #{name},
+  		`nick`= #{nick}, 
+  		`email`=#{email},
+  		`hp`   =#{hp},
+  		`zip`  = #{zip},
+  		`add1` = #{add1},
+  		`add2` = #{add2},
+  		`regip`= #{regip},
+  		`rdate`=  NOW();
+  	
+  </insert>
+  <select id="selectMember" resultType="kr.co.farmstory.vo.MemberVo">
+  	SELECT * FROM `Jboard_member` WHERE `uid`=#{uid} AND `pass`=PASSWORD(#{pass});
+  
+  </select>
+  
+  <select id="selectCountUid" resultType="int">
+  	SELECT COUNT(`uid`) FROM `Jboard_member` WHERE `uid`=#{uid};
+  </select>
+  <select id="selectCountNick" resultType="int">
+  	SELECT COUNT(`nick`) FROM `Jboard_member` WHERE `nick`=#{nick};
+  </select>
+  <select id="selectCountEmail" resultType="int">
+  	SELECT COUNT(`email`) FROM `Jboard_member` WHERE `email`=#{email};
+  </select>
+  <select id="selectCountHp" resultType="int">
+  	SELECT COUNT(`hp`) FROM `Jboard_member` WHERE `hp`=#{hp};
+  </select>
+  
+  
+  <select id="selectTerms" resultType="kr.co.farmstory.vo.TermsVo">
+  	SELECT * FROM `Jboard_terms`;
+  </select>
+  
+</mapper>

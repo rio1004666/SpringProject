@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.farmstory.dao.MainDao">
+
+	<select id="selectLatest" resultType="kr.co.farmstory.vo.ArticleVo">
+		SELECT `seq`, `title`, `rdate` FROM `Jboard_article`
+		WHERE `cate`=#{cate} 
+		ORDER BY `rdate` DESC
+		LIMIT 5;
+	</select>
+	
+</mapper>

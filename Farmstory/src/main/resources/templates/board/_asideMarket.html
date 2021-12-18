@@ -1,0 +1,22 @@
+<!-- Market이 cate2, tit2 2번이었어~~~~~ -->
+        <div id="sub">
+            <div><img th:src="@{/img/sub_top_tit2.png}" alt="CROP TALK"></div>
+            <section class="cate2">
+                <aside>
+                    <img th:src="@{/img/sub_aside_cate2_tit.png}" alt="장보기"/>
+
+                    <ul class="lnb">
+                        <li th:classappend="on"><a th:href="@{/board/list}">장보기</a></li>
+                    </ul>
+
+                </aside>
+                <article>
+                    <nav>
+                        <img th:src="@{/img/sub_nav_tit_cate2_{cate}.png(cate=${cate})}" alt="장보기"/>
+                        <p>
+                            HOME > 장보기 > 
+                            <em th:if="${cate}=='market'">장보기</em>
+                        </p>
+                    </nav>
+
+                    <!-- 내용 시작 -->

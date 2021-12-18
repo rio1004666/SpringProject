@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글보기</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script>
+          $(document).ready(function(){
+             
+             // 댓글 삭제
+             $('.btnCommentDel').click(function(){
+                var result = confirm('정말 삭제 하시겠습니까?');
+                return result;
+             });
+             
+             
+             var content = '';
+             
+             // 댓글 수정
+             $('.btnCommentModify').click(function(){
+                
+                var tag = $(this);
+                var mode = $(this).text();                          
+                var textarea = $(this).parent().prev();
+                
+                if(mode == '수정'){
+                   // 수정모드
+                   content = textarea.val(); 
+                   
+                   $(this).prev().css('display', 'none');
+                   $(this).next().css('display', 'inline');
+                   $(this).text('수정완료');
+                   textarea.attr('readonly', false).focus();
+                    textarea.css({
+                       'background': 'white',
+                       'outline': '1px solid gray'
+                     
+                    });
+                    
+                }else{
+
+                   // 수정모드 해제 
+                  tag.text('수정');
+                  tag.prev().css('display', 'inline');
+                  tag.next().css('display', 'none');                                                   
+                   textarea.attr('readonly', true);
+                   textarea.css({
+                      'background': 'transparent',
+                      'outline': 'none'
+                   });
+                   
+                   // 수정완료 모드
+                   
+                   // 수정 관련 주석 1
+                   // data-seq -> data의 속성을 seq로 적어준것이다(댓글 리스트 부분에 사용)
+                   var seq     = textarea.attr("data-seq"); 
+                   // 댓글 입력폼의 textarea name=content 부분에 사용 
+                   var content = textarea.val(); 
+                   
+                     var jsonData = {
+                         'seq': seq,
+                         'content': content
+                    // 위에서 var 변수이름 으로 입력값을 대입받은 seq, content를 
+                    // ArticleVo에 선언되어져 있던 'seq', 'content'로 대입하여 주고 
+                    // 'seq', 'content'가 선언되어 있는 ArticleVo를 관련 Controller
+                    // 부분에서 값을 불러와 service객체에 대입하여 준다. (-> controller로 이동 )
+                         
+					};
+                  // 수정 관련 주석 3
+                  // controller에서 return받은 json데이터를 ajax통신을 이용하여 출력한다.
+                   $.ajax({
+                      url: '/board/completeComment',
+                      type: 'post',
+                      data: jsonData,   // 서버로 전송하는 데이터(JSON) 지정
+                      dataType: 'json', // 서버로 부터 전달되는 데이터 종류
+                      success: function(data){
+                         alert('수정하시겠습니까?')
+                      }   
+                   });
+                }
+               
+             });
+             
+             // 댓글 수정 취소
+             $('.btnCommentCancel').click(function(e){
+                e.preventDefault();
+                $(this).prev().text('수정');
+                $(this).prev().prev().css('display', 'inline');
+                $(this).css('display', 'none');
+                
+                var textarea = $(this).parent().prev();
+                
+                textarea.val(content);
+                textarea.attr('readonly', true);
+                textarea.css({
+                   'background': 'transparent',
+                   'outline': 'none'
+                });   
+             });
+          });
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+      <th:block th:include="@{/_header.html}"></th:block>
+      <th:block th:include="@{/board/_aside__${group}__.html}"></th:block>
+        <section id="board" class="view">
+            <h3>글보기</h3>
+            <table>
+                <tr>
+                    <td>제목</td>
+                    <td><input type="text" name="title" th:value="${articleVo.title}" readonly/></td>
+                </tr>
+                <tr th:if="${articleVo.file == 1}">
+                    <td>첨부파일</td>
+                    <td>
+                          <a th:href="@{/fileDownload(fseq=${articleVo.fileVo.fseq})}">[[${articleVo.fileVo.oriName}]]</a><br/>
+                        <span>[[${articleVo.fileVo.download}]]회 다운로드</span>
+                    </td>
+                </tr>
+                <tr>
+                    <td>내용</td>
+                    <td>
+                        <textarea name="content" readonly>[[${articleVo.content}]]</textarea>
+                    </td>
+                </tr>
+            </table>
+            <div>
+                <a th:href="@{/board/delete(group=${group},cate=${cate},seq=${articleVo.seq})}" class="btnDelete">삭제</a>
+                <a th:href="@{/board/modify(group=${group},cate=${cate},seq=${articleVo.seq})}" class="btnModify">수정</a>
+                <a th:href="@{/board/list(group=${group},cate=${cate})}" class="btnList">목록</a>
+            </div>  
+            
+            <!-- 댓글리스트 -->
+            <section class="commentList">
+                <h3>댓글목록</h3>
+                <article th:each="comment:${comments}" class="comment">
+                    <span>
+                        <span>[[${comment.nick}]]</span>
+                        <span>[[${comment.rdate.substring(2,10)}]]</span>
+                    </span>                    
+                    <textarea name="comment" th:data-seq="${comment.seq}"  readonly>[[${comment.content}]]</textarea>
+                    <div>
+                        <a th:href="@{/board/deleteComment(group=${group},cate=${cate},seq=${comment.seq},parent=${comment.parent})}" class="btnCommentDel">삭제</a>
+                        <a th:href="@{#}" class="btnCommentModify">수정</a>
+                        <a th:href="@{/board/view(group=${group},cate=${cate},seq=${comment.seq})}" class="btnCommentCancel" style="display:none">취소</a>
+                    </div>
+                </article>
+                <p th:if="${comments.size == 0}" class="empty">
+                    등록된 댓글이 없습니다.
+                </p>
+            </section>
+
+            <!-- 댓글입력폼 -->
+            <section class="commentForm">
+                <h3>댓글쓰기</h3>
+                <form th:action="@{/board/insertComment(group=${group},cate=${cate},seq=${articleVo.seq})}" method="post">
+                <input type="hidden" name="parent" th:value="${articleVo.seq}">
+                <input type="hidden" name="uid"    th:value="${session.sessMember.uid}">
+     
+                    <textarea name="content"></textarea>
+                    <div>
+                        <a th:href="@{/board/view(group=${group},cate=${cate},seq=${articleVo.seq})}" class="btnCancel">취소</a>
+                        <input type="submit" class="btnWrite" value="작성완료"/>
+                    </div>
+                </form>
+            </section>
+
+        </section>
+         <th:block th:include="/_footer.html"></th:block>
+    </div>    
+</body>
+</html>

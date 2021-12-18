@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.farmstory.dao.BoardDao">
+	<insert id="insertArticle" useGeneratedKeys="true" keyProperty="seq">
+      INSERT INTO `Jboard_article` SET
+      		  `cate`=#{cate},
+              `title`= #{title},
+              `content`= #{content},
+              `file`= #{file},
+              `uid`= #{uid},
+              `regip`= #{regip},
+              `rdate`= NOW();
+	</insert>
+	<insert id="insertFile">
+		INSERT INTO `Jboard_file` SET
+				`parent`=#{parent},
+				`oriName`=#{oriName},
+				`newName`=#{newName},
+				`rdate`=NOW();
+	</insert>
+	
+	<!-- 아래에서 cate값을 설정해주면 index페이지에서 최신글을 불러올때(최신글 로드시 그룹, 카테에 맞춰 불러오도록 설정 해둠 )
+	comment에 설정된 cate값이 cate를 지정해주어 최신글에 로드가 되어버린다. --> 
+	<insert id="insertComment">
+		INSERT INTO `Jboard_article` SET
+				`parent`=#{parent},
+				`content`=#{content},
+				`uid`=#{uid},
+				`rdate`=NOW();
+	</insert>
+	
+	<resultMap  id="articleVoResultMap" type="kr.co.farmstory.vo.ArticleVo">
+		<id 	column="seq" 		property="seq" />
+		<result column="parent"	 	property="parent" />
+		<result column="comment" 	property="comment" />
+		<result column="title" 		property="title" />
+		<result column="content" 	property="content" />
+		<result column="file" 		property="file" />
+		<result column="hit" 		property="hit" />
+		<result column="uid" 		property="uid" />
+		<result column="rdate" 		property="rdate" />
+		<association property="fileVo" javaType="kr.co.farmstory.vo.FileVo">
+			<id	 	column="fseq" 		property="fseq" />
+			<result column="fileparent" property="parent" />
+			<result column="oriName" 	property="oriName" />
+			<result column="download" 	property="download" />		
+		</association>
+	</resultMap>
+
+	<select id="selectArticle"  resultMap="articleVoResultMap">
+		SELECT a.*, b.*, b.parent AS `fileParent` FROM `Jboard_article` AS a
+		left JOIN `Jboard_file` AS b
+		ON a.seq = b.parent
+		WHERE `seq`=#{seq};
+	</select>
+		
+	<select id="selectArticles" resultType="kr.co.farmstory.vo.ArticleVo">
+		SELECT a.*, b.nick FROM `Jboard_article`  AS a
+		JOIN `Jboard_member` AS b ON a.uid=b.uid
+		WHERE `parent`=0 AND `cate`=#{cate}
+		ORDER BY `seq` DESC
+		LIMIT #{start}, 10;
+		
+	</select>
+	
+	<select id="selectCountTotal" resultType="int">
+		SELECT COUNT(`seq`) FROM `Jboard_article` WHERE `parent`=0 AND `cate`=#{cate};
+	</select>
+	
+	<select id="selectFile" resultType="kr.co.farmstory.vo.FileVo">
+		SELECT * FROM `Jboard_file` WHERE `fseq`=#{fseq};
+	</select>
+	
+	<select id="selectComments" resultType="kr.co.farmstory.vo.ArticleVo">
+		SELECT a.*, b.nick FROM `Jboard_article`  AS a
+		JOIN `Jboard_member` AS b ON a.uid=b.uid
+		WHERE `parent`=#{seq};
+	</select>
+	
+	<select id="selectComment" resultType="kr.co.farmstory.vo.ArticleVo">
+		SELECT a.*, b.nick FROM `Jboard_article`  AS a
+		JOIN `Jboard_member` AS b ON a.uid=b.uid
+		WHERE `seq`=#{seq};
+	</select>
+	
+	
+	<update id="updateArticle">
+		UPDATE `Jboard_article` SET 
+              `title`= #{title},
+              `content`= #{content},
+              `rdate`= NOW()
+        WHERE `seq` = #{seq} AND `cate` = #{cate};
+	</update>
+	
+	<update id="updateComment">
+		UPDATE `Jboard_article` SET 
+		
+              `content`= #{content},
+              `rdate`= NOW()
+              
+        WHERE `seq` = #{seq};
+	</update>
+	
+	
+	<update id="updateFileDownload">
+		UPDATE `Jboard_file` SET `download`=`download`+1 WHERE `fseq`=#{fseq};
+	</update>	
+  	<delete id="deleteArticle">
+  		DELETE FROM `Jboard_article` WHERE `seq`=#{seq};
+  	</delete>
+  	
+  	<delete id="deleteComment">
+  		DELETE FROM `Jboard_article` WHERE `seq`=#{seq};
+  	</delete>
+  	
+  	<update id="completeComment"> <!-- 오류가 날땐 항상 오타를 찾아 보자  -->
+        UPDATE `Jboard_article` SET `content` =#{content} WHERE `seq`=#{seq};
+     </update>
+  	
+</mapper>

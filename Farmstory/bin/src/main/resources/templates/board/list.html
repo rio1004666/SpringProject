@@ -1,0 +1,66 @@
+es (54 sloc)  2.45 KB
+   
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글목록</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">  
+</head>
+<body>
+    <div id="wrapper">
+     <th:block th:include="@{/_header.html}"></th:block>
+     <th:block th:include="@{/board/_aside__${group}__.html}"></th:block>
+        <section id="board" class="list">
+            <h3>글목록</h3>
+            <article>
+                <table border="0">
+                    <tr>
+                        <th>번호</th>
+                        <th>제목</th>
+                        <th>글쓴이</th>
+                        <th>날짜</th>
+                        <th>조회</th>
+                    </tr>
+                   
+                   <tr th:each="article, i:${articles}">                        
+                    	<td>[[${pageStartNum-i.index}]]</td>                        
+                        <td><a th:href="@{/board/view(group=${group},cate=${cate},seq=${article.seq})}">[[${article.title}]]</a>&nbsp;&#91;[[${article.comment}]]&#93;</td> 
+                        <td>[[${article.uid}]]</td>
+                        <td>[[${article.rdate.substring(2, 10)}]]</td>
+                        <td>[[${article.hit}]]</td>
+                    </tr>
+                </table>
+            </article>
+
+            <!-- 페이지 네비게이션 -->
+             <div class="paging">
+            	<th:block th:if="${groups[0] > 1}">
+                	<a th:href="@{/board/list(group=${group},cate=${cate},pg=${groups[0]-1})}" class="prev">이전</a>
+                </th:block>
+                
+                <th:block th:if="${num}!=0" th:each="num:${#numbers.sequence(groups[0], groups[1])}">
+                	<a th:href="@{/board/list(group=${group},cate=${cate},pg=${num})}" th:class="${num==currentPage?'num current':'num'}">[[${num}]]</a>
+                </th:block>
+                
+                <th:block th:if="${groups[1] < lastPageNum}">
+                	<a th:href="@{/board/list(group=${group},cate=${cate},pg=${groups[1]+1})}" class="next">다음</a>
+                </th:block>
+            </div>	
+
+            <!-- 글쓰기 버튼 -->
+            <a th:href="@{/board/write(group=${group},cate=${cate})}" class="btnWrite">글쓰기</a>
+
+        </section>
+        
+         <!-- 내용 끝 -->
+
+                </article>
+            </section>
+
+        </div>
+   
+        <th:block th:include="/_footer.html"></th:block>
+    </div>    
+</body>
+</html>

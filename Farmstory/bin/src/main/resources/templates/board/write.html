@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>글쓰기</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <div id="wrapper">
+    	<th:block th:include="/_header.html"></th:block>
+    	<th:block th:include="@{/board/_aside__${group}__.html}"></th:block>
+        <section id="board" class="write">
+            <h3>글쓰기</h3>
+                <form th:action="@{/board/write(group=${group},cate=${cate})}" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="uid" th:value="${session.sessMember.uid}"/>
+                    <table>
+                        <tr>
+                            <td>제목</td>
+                            <td><input type="text" name="title" placeholder="제목을 입력하세요."/></td>
+                        </tr>
+                        <tr>
+                            <td>내용</td>
+                            <td>
+                                <textarea name="content"></textarea>                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>첨부</td>
+                            <td><input type="file" name="fname"/></td>
+                        </tr>
+                    </table>
+                    <div>
+                        <a th:href="@{/board/list(group=${group},cate=${cate})}" class="btnCancel">취소</a>
+                        <input type="submit" name = "btnWrite" class="btnWrite" value="작성완료"/>
+                    </div>
+                </form>
+            </article>
+        </section>
+        <!-- 내용 끝 -->
+                </article>
+            </section>
+        </div>
+    	<th:block th:include="/_footer.html"></th:block>
+    </div>
+</body>
+</html>

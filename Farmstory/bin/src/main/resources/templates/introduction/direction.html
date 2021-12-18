@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>팜스토리::찾아오시는길</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+</head>
+<body>
+    <div id="wrapper">
+         <th:block th:include="/_header.html"></th:block>
+
+        <div id="sub">
+            <div><img src="../img/sub_top_tit1.png" alt="INTRODUCTION"></div>
+            <section class="cate1">
+                <aside>
+                    <img src="../img/sub_aside_cate1_tit.png" alt="팜스토리 소개"/>
+
+                    <ul class="lnb">
+                        <li><a th:href="@{/introduction/hello}">인사말</a></li>
+                        <li class="on"><a th:href="@{/introduction/direction}">찾아오시는 길</a></li>
+                    </ul>
+
+                </aside>
+                <article>
+                    <nav>
+                        <img src="../img/sub_nav_tit_cate1_tit2.png" alt="찾아오시는길"/>
+                        <p>
+                            HOME > 팜스토리소개 > <em>찾아오시는길</em>
+                        </p>
+                    </nav>
+
+                    <!-- 내용 시작 -->
+					
+
+                    <!-- 내용 끝 -->
+
+                </article>
+            </section>
+
+        </div>
+       <th:block th:include="/_footer.html"></th:block>
+    </div>    
+</body>
+</html>
