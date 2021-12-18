@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kmarket.dao.MainDao">
+	
+	<resultMap id="categoriesMap" type="kr.co.kmarket.vo.CategoriesVo">
+		<result property="cate1" column="cate1"/>
+		<result property="tit1" column="tit1"/>
+		
+		<collection property="cate2List" ofType="kr.co.kmarket.vo.ProductCate2Vo">
+			<result property="cate1" column="cate1"/>
+			<result property="cate2" column="cate2"/>
+			<result property="title" column="tit2"/>
+		</collection>
+	</resultMap>
+	
+	<select id="selectCategories" resultMap="categoriesMap">
+		SELECT 
+			c2.cate1,
+			c2.cate2,
+			c1.title AS tit1,
+			c2.title AS tit2
+		FROM `km_product_cate1` AS c1
+		JOIN `km_product_cate2` AS c2
+		ON c1.cate1 = c2.cate1
+		ORDER BY c2.cate1, c2.cate2;	
+	</select>
+	<!-- UPDATE `km_product` SET `hit` = CEIL(RAND()*100); 고객들의 조회수로 히트상품을 고르기위해 의도적으로 조회수를 조작시킴 -->
+	<!-- mybatis 문법으로 조건분기문으로 만든다. -->
+	<select id="selectMainProduct" resultType="kr.co.kmarket.vo.ProductVo">
+		SELECT *,FLOOR((price*(1-discount/100))) AS salePrice FROM `km_product` 
+		<if test="order == 'hit'">ORDER BY `hit` DESC LIMIT 8;</if>
+		<if test="order == 'score'">ORDER BY `score` DESC LIMIT 8;</if>
+		<if test="order == 'rdate'">ORDER BY `rdate` DESC LIMIT 8;</if>
+		<if test="order == 'discount'">ORDER BY `discount` DESC LIMIT 8;</if>
+		<if test="order == 'sold'">ORDER BY `sold` DESC LIMIT 5;</if>
+	</select>
+	
+	
+	
+	
+	
+	
+</mapper>

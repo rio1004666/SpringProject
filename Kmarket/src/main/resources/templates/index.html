@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">    
+    <title>케이마켓::대한민국 1등 온라인 쇼핑몰</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script>
+    	// 슬라이더 
+        $(document).ready(function(){
+          $('.slider > ul').bxSlider({
+              pager: false,
+              easing: 'linear'
+          });
+        });
+      // 베스트 상품 영역 고정 
+      $(function(){
+
+        var best = $('aside > .best');
+
+        $(window).scroll(function(){
+
+          var t = $(this).scrollTop();
+
+          if(t > 620){
+            best.css({
+              'position':'fixed',
+              'top': '0'
+            });
+          }else{
+            best.css({'position':'static'});
+          }
+        });
+      });
+      
+      // 추천상품, 최신, 할인상품 요청하기 
+      
+      $(function(){
+    		
+    		var isRecommendOk = false;
+    		var isLatestOk    = false;
+    		var isDiscountOk  = false;
+    		
+    		var sectionHit 		 = $('section.hit');
+    		var sectionRecommend = $('section.recommend');
+    		var sectionNew 		 = $('section.new');
+    		var sectionDiscount  = $('section.discount');
+    		
+    		
+    		$(window).scroll(function(){
+    			
+    			var top = $(this).scrollTop();    			   			
+    			console.log('top : '+top);
+    			
+    			if(top > 1000 && !isRecommendOk){
+    				// 추천상품 요청하기
+    				getProducts('/Kmarket/getMainProduct?order=score', sectionRecommend);
+    				isRecommendOk = true;
+    				
+    			}else if(top > 1800 && !isLatestOk){
+    				// 최신상품 요청하기
+    				getProducts('/Kmarket/getMainProduct?order=rdate', sectionNew);
+    				isLatestOk = true;
+    				
+    			}else if(top > 2300 && !isDiscountOk){
+    				// 할인상품 요청하기
+    				getProducts('/Kmarket/getMainProduct?order=discount', sectionDiscount);
+    				isDiscountOk = true;
+    			}
+    		});
+    		
+    		// 메인상품 요청함수
+    		function getProducts(url, tag){
+    			
+    			$.get(url, function(data){
+					
+					// loading 이미지 제거
+					tag.find('img[alt=loading]').remove();
+					
+					// article 상품정보 출력
+					$.each(data, function(i, productVo){
+						
+						var article = sectionHit.find('article:last-child').clone();
+						article.find('> a').attr('href', '/Kmarket/product/view?productCode='+productVo.productCode);
+						article.find('.thumb > img').attr('src', '/Kmarket/thumb/'+productVo.cate1+'/'+productVo.cate2+'/'+productVo.thumb1);
+						article.find('h2').text(productVo.name);
+						article.find('p').text(productVo.descript);
+						article.find('.org_price > del').text(productVo.price.toLocaleString());
+						article.find('.org_price > span').text(productVo.discount+'%');
+						article.find('.dis_price > ins').text(productVo.salePrice.toLocaleString());
+						article.find('.dis_price > span').remove();
+						article.find('.dis_price > strong').remove();
+						
+						if(productVo.delivery > 0){
+							article.find('.dis_price').append('<strong>배송비 '+productVo.delivery.toLocaleString()+'</strong>');
+						}else{
+							article.find('.dis_price').append('<span>무료배송</span>');
+						}
+						
+						tag.append(article);
+					});
+				});
+    		}
+    		
+    		
+    	});
+      
+      
+    </script>
+</head>
+<body>
+    <div id="wrapper">
+        <th:block th:include="@{_header.html}"></th:block>
+        <main>
+            <!-- 카테고리/베스트 상품 영역 -->
+            <aside>
+                <!-- 카테고리 -->
+                <th:block th:include="@{_category.html}"></th:block>
+              
+
+                <!-- 베스트상품 배너 -->
+                <article class="best">
+                  <h1><i class="fas fa-crown"></i>베스트상품</h1>
+                  <ol>
+                    <li th:each="productBest,i:${productsBest}"> <!-- index값 불러오기위해 i를 선언 -->
+                      <a th:href="@{/product/view(productCode=${productBest.productCode})}">
+                        <div class="thumb">
+                          <i>[[${i.index+1}]]</i> <!-- index값 들가시킴 -->
+                          <img th:src="@{/thumb/{cate1}/{cate2}/{img}(cate1=${productBest.cate1},cate2=${productBest.cate2},img=${productBest.thumb1})}" alt="item1">
+                        </div>
+                        <h2>[[${productBest.name}]]</h2>
+                        <div class="org_price">
+                          <del>[[${#numbers.formatInteger(productBest.price, 3, 'COMMA')}]]</del>
+                          <span>[[${productBest.discount}]]%</span>
+                        </div>
+                        <div class="dis_price">
+                          <ins>[[${#numbers.formatInteger(productBest.salePrice, 3, 'COMMA')}]]</ins>
+                        </div>
+                      </a>
+                    </li>
+                    
+                  </ol>
+                </article>
+            </aside>
+            <section>
+                <!-- 슬라이더 영역 -->
+                <section class="slider">
+                    <ul>
+                        <li><a th:href="@{/#}"><img th:src="@{/img/slider_item1.jpg}" alt="item1"></a></li>
+                        <li><a th:href="@{/#}"><img th:src="@{/img/slider_item2.jpg}" alt="item2"></a></li>
+                        <li><a th:href="@{/#}"><img th:src="@{/img/slider_item3.jpg}" alt="item3"></a></li>
+                        <li><a th:href="@{/#}"><img th:src="@{/img/slider_item4.jpg}" alt="item4"></a></li>
+                        <li><a th:href="@{/#}"><img th:src="@{/img/slider_item5.jpg}" alt="item5"></a></li>
+                    </ul>
+                </section>
+                <!-- 히트상품 영역 -->
+                <section class="hit">
+                    <h3><span>히트상품</span></h3>
+                    <article th:each="productHit:${productsHit}">
+                        <a th:href="@{/product/view(productCode=${productHit.productCode})}">
+                            <div class="thumb">
+                              <img th:src="@{/thumb/{cate1}/{cate2}/{img}(cate1=${productHit.cate1},cate2=${productHit.cate2},img=${productHit.thumb1})}" alt="t1">
+                            </div>
+                            <h2>[[${productHit.name}]]</h2>
+                            <p>[[${productHit.descript}]]</p>
+                            <div class="org_price">
+                              <del th:text="${#numbers.formatInteger(productHit.price, 3, 'COMMA')}"></del>
+                              <span>[[${productHit.discount}]]%</span>
+                            </div>
+                            <div class="dis_price">
+                              <ins>[[${#numbers.formatInteger(productHit.salePrice, 3, 'COMMA')}]]</ins>
+                              <span th:if="${productHit.delivery == 0}">무료배송</span>
+                              <!-- span태그로 하면 span태그의 스타일이 적용되므로  -->
+                              <strong th:if="${productHit.delivery != 0}">배송비 [[${#numbers.formatInteger(productHit.delivery, 3, 'COMMA')}]]</strong>
+                            </div>
+                        </a>
+                    </article>
+                </section>
+                <!-- 추천상품 영역 -->
+                <section class="recommend">
+                    <h3><span>추천상품</span></h3>
+                    <!-- inline style  -->
+                    <img th:src="@{/img/loading.gif}" style="display:block; margin: 0 auto;" alt="loading">
+                </section>
+                <!-- 최신상품 영역 -->
+                <section class="new">
+                    <h3><span>최신상품</span></h3>
+                     <img th:src="@{/img/loading.gif}" style="display:block; margin: 0 auto;" alt="loading">
+                </section>
+                <!-- 할인상품 영역 -->
+                <section class="discount">
+                    <h3><span>할인상품</span></h3>   
+                     <img th:src="@{/img/loading.gif}" style="display:block; margin: 0 auto;" alt="loading">      
+                </section>
+            </section>
+        </main>
+        
+        <th:block th:include="@{_footer.html}"></th:block>
+        
+        <button type="button" id="top">상단이동</button>
+    </div>    
+</body>
+</html>

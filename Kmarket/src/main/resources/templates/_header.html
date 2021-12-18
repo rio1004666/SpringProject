@@ -1,0 +1,40 @@
+<header>
+     <div class="top">
+         <div>
+            <a th:if="${session.sessMember == null}" th:href="@{/member/login}">로그인</a>
+            <a th:if="${session.sessMember == null}" th:href="@{/member/join}">회원가입</a>
+            <a th:if="${session.sessMember != null}" th:href="@{/member/logout}">로그아웃</a>
+            <a th:if="${session.sessMember != null && session.sessMember.type==2}" th:href="@{/admin}">관리페이지</a>
+            <a th:if="${session.sessMember != null}" th:href="@{#}">마이페이지</a>
+            <a th:href="@{/product/cart}"><i class="fa fa-shopping-cart" aria-hidden="true"></i>&nbsp;장바구니</a>
+         </div>
+     </div>
+     <div class="logo">
+         <div>
+            <a th:href="@{/}"><img th:src="@{/img/header_logo.png}" alt="로고"/></a>
+            <form th:action="@{/product/search}" method="get">
+                <input type="text" name="keyword"/>
+                <button><i class="fa fa-search"></i></button>
+            </form>                
+        </div>
+         
+     </div>
+     <div class="menu">
+         <div>
+             <ul>
+                 <li><a href="#">히트상품</a></li>
+                 <li><a href="#">추천상품</a></li>
+                 <li><a href="#">최신상품</a></li>
+                 <li><a href="#">인기상품</a></li>
+                 <li><a href="#">할인상품</a></li>
+             </ul>
+             <ul>
+                 <li><a href="#">쿠폰존</a></li>
+                 <li><a href="#">사용후기</a></li>
+                 <li><a href="#">개인결제</a></li>
+                 <li><a href="#">고객센터</a></li>
+                 <li><a href="#">FAQ</a></li>
+             </ul>
+         </div>
+     </div>
+ </header>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">    
+    <title>케이마켓::대한민국 1등 온라인 쇼핑몰</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://kit.fontawesome.com/20962f3e4b.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">    
+    <style>    
+    </style>
+</head>
+<body>
+    <div id="wrapper">
+        <th:block th:include="@{_header.html}"/>
+        <main>
+            <!-- 카테고리/베스트 상품 영역 -->
+            <aside>
+                <th:block th:include="@{_category.html}"/>
+            </aside>
+
+            <!-- 상품목록 -->
+            <section id="list">
+              
+              <!-- 제목, 페이지 네비게이션 -->
+              <nav>
+                <h1>[[${cateVo.tit2}]] 상품리스트</h1>
+                <p>
+                  HOME > <span>[[${cateVo.tit1}]]</span> > <strong>[[${cateVo.tit2}]]</strong>
+                </p>
+              </nav>
+
+              <!-- 정렬방식 링크 -->
+              <ul class="sort">
+                  <li><a th:href="@{/product/list(cate1=${cateVo.cate1},cate2=${cateVo.cate2},order=1)}" th:classappend="${order} == 1  ? on">판매많은순</a></li>
+                  <li><a th:href="@{/product/list(cate1=${cateVo.cate1},cate2=${cateVo.cate2},order=2)}" th:classappend="${order} == 2  ? on">낮은가격순</a></li>
+                  <li><a th:href="@{/product/list(cate1=${cateVo.cate1},cate2=${cateVo.cate2},order=3)}" th:classappend="${order} == 3  ? on">높은가격순</a></li>
+                  <li><a th:href="@{/product/list(cate1=${cateVo.cate1},cate2=${cateVo.cate2},order=4)}" th:classappend="${order} == 4  ? on">평점높은순</a></li>
+                  <li><a th:href="@{/product/list(cate1=${cateVo.cate1},cate2=${cateVo.cate2},order=5)}" th:classappend="${order} == 5  ? on">후기많은순</a></li>
+                  <li><a th:href="@{/product/list(cate1=${cateVo.cate1},cate2=${cateVo.cate2},order=6)}" th:classappend="${order} == 6  ? on">최근등록순</a></li>
+              </ul>
+
+              <!-- 상품목록 10개 -->
+              <section>
+                <article th:each="product:${products}">
+                  <ul>
+                    <li>
+                      <a th:href="@{/product/view(productCode=${product.productCode})}" class="thumb">
+                      	<img th:src="@{/thumb/{cate1}/{cate2}/{img}(cate1=${product.cate1}, cate2=${product.cate2}, img=${product.thumb1})}" alt="상품이미지"/>
+                      </a>
+                    </li>
+                    <li>
+                      <a th:href="@{/product/view(productCode=${product.productCode})}">
+                      	<h3 class="name">[[${product.name}]]</h3>
+                      </a>
+                      <p class="desc">
+                        <a th:href="@{/product/view(productCode=${product.productCode})}">[[${product.descript}]]</a>
+                      </p>
+                    </li>
+                    <li>
+                      <div class="dis_price">
+                        <ins>[[${#numbers.formatInteger(product.salePrice, 3, 'COMMA')}]]</ins>
+                      </div>
+                      <div class="org_price">
+                        <del>[[${#numbers.formatInteger(product.price, 3, 'COMMA')}]]</del>
+                        <span>[[${product.discount}]]%</span>
+                      </div>
+                      <span th:if="${product.delivery == 0}" class="freeshipping">무료배송</span>
+                      <span th:if="${product.delivery != 0}">배송비 [[${#numbers.formatInteger(product.delivery, 3, 'COMMA')}]]원</span>
+                    </li>
+                    <li>
+                      <h4 class="seller"><i class="fas fa-home"></i>&nbsp;[[${product.company}]]</h4>
+                      <h5 class="badge power">판매자등급</h5>
+                      <h6 th:if="${product.score == 1}" class="rating star1">상품평</h6>
+                      <h6 th:if="${product.score == 2}" class="rating star2">상품평</h6>
+                      <h6 th:if="${product.score == 3}" class="rating star3">상품평</h6>
+                      <h6 th:if="${product.score == 4}" class="rating star4">상품평</h6>
+                      <h6 th:if="${product.score == 5}" class="rating star5">상품평</h6>
+                    </li>
+                  </ul>
+                </article>
+                
+              </section>
+
+              <!-- 상품목록 페이지번호 -->
+              <div class="paging">
+                <span class="prev">
+                	<a th:if="${groups[0] > 1}" th:href="@{/product/list(cate1=${cateVo.cate1}, cate2=${cateVo.cate2}, pg=${groups[0]-1})}" class="prev">이전</a>
+                </span>
+                <span class="num">
+                  	<th:block th:each="num:${#numbers.sequence(groups[0], groups[1])}">
+                		<a th:href="@{/product/list(cate1=${cateVo.cate1}, cate2=${cateVo.cate2}, pg=${num})}" th:class="${num==currentPage?'on':''}">[[${num}]]</a>
+                	</th:block>
+                </span>
+                <span class="next">
+					<a th:if="${groups[1] < lastPageNum}" th:href="@{/product/list(cate1=${cateVo.cate1}, cate2=${cateVo.cate2}, pg=${groups[1]+1})}" class="next">다음</a>
+                </span>
+              </div>
+
+            </section>
+        </main>
+        <th:block th:include="@{_footer.html}"/>
+        <button type="button" id="top">상단이동</button>
+    </div>    
+</body>
+</html>

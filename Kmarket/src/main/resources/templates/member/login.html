@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓::로그인</title>
+    <link rel="stylesheet" th:href="@{/css/member.css}">
+    <script th:inline="javascript">
+    	var success = [[${success}]];
+    	
+		if(success == '101'){
+			alert('아이디와 비밀번호를 다시 확인해주세요.');
+		}else if(success == '102'){
+			alert('정상적으로 로그아웃에 성공하셨습니다.');
+		}
+		else if(success == '201'){
+			alert('장바구니를 확인하시려면 로그인을 하셔야합니다.');
+		}
+    
+    </script>
+</head>
+<body>
+    <div id="member-wrapper">
+        <th:block th:include="@{member/_header.html}"></th:block>
+        <main>
+            <div id="member-login">
+                <img th:src="@{/img/member_txt_login.gif}" alt="로그인" />
+				<form th:action="@{/member/login}" method="POST">
+					<input type="hidden" name="productCode" th:if="${productCode}" th:value="${productCode}"> <!-- 상품코드가없다면 입력필드를 출력안할것이다. -->
+					<div>
+						<label>
+							<span><img th:src="@{/img/member_txt_id.gif}" alt="아이디"></span> 
+							<input type="text" name="uid" />
+						</label>
+						<label>
+							<span><img th:src="@{/img/member_txt_pass.gif}" alt="비밀번호"></span> 
+							<input type="password" name="pass" />
+						</label>
+					</div>
+					<input type="submit" value="로그인" />
+					<span>
+						<a href="#">아이디찾기</a>
+						<a href="#">비밀번호찾기</a>
+						<a th:href="@{/member/join}">회원가입</a>
+					</span>
+				</form>
+				<img th:src="@{/img/member_certifi_logo.gif}" alt="banner">
+            </div>
+        </main>        
+        <th:block th:include="@{member/_footer.html}"></th:block>
+    </div>    
+</body>
+</html>

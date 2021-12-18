@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>케이마켓::약관</title>
+    <link rel="stylesheet" th:href="@{/css/member.css}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    
+	<script th:inline="javascript">
+		$(function(){
+			var type = "[[${type}]]";
+			
+			$('.agree').click(function(){ // 이벤트 핸들러 정의 => 여기서는 클릭 
+				var isChecked1 = $('input[name=agree1]').is(':checked');
+				var isChecked2 = $('input[name=agree2]').is(':checked');
+				var isChecked3 = $('input[name=agree3]').is(':checked');
+				var isChecked4 = $('input[name=agree4]').is(':checked');
+				if(!isChecked1){
+					alert('이용약관에 동의하셔야합니다.');
+					return; // 리턴하지않으면 계속 밑으로 내려가면서 뜬다. 하나만 안되도 리턴해버린다.
+				}	
+				if(!isChecked2){
+					alert('전자금융거래 이용약관에 동의 하셔야 합니다.');
+					return;
+				}	
+				if(!isChecked3){
+					alert('개인정보 수집에 동의 하셔야 합니다.');
+					return;
+				}	
+				if(!isChecked4 && type == 2){ // 판매자일경우에만 적용 
+					alert('전자세금 신고납부에 동의 하여야 합니다.');
+					return;
+				}
+				if(type == 1){
+					/* 자바스크립트 페이지 이동 */
+					//location.href = '/member/register'; // 기록에 남기때문에 그 기록에남은 그전단계로 간다.
+					location.replace('/Kmarket/member/register?type=1'); // 기록이안남아서 기록이 남은 join페이지로 간다
+				}
+				else{
+					//location.href = '/member/register-seller';
+					location.replace('/Kmarket/member/register-seller?type=2');
+				}
+			});
+			
+		});	
+	
+	
+	</script>
+
+</head>
+<body>
+    <div id="member-wrapper">
+        <th:block th:include="@{member/_header.html}"></th:block>
+        <main>
+            <div id="member-signup">
+				<h1>약관동의</h1>
+				<section>
+					<h3><span class="essential">(필수)</span>케이마켓 이용약관</h3>
+					<textarea class="terms" readonly>[[${termsVo.terms}]]</textarea>
+					<label><input type="checkbox" name="agree1" />동의합니다.</label>
+
+					<h3><span class="essential">(필수)</span>전자금융거래 이용약관</h3>
+					<textarea class="financial" readonly>[[${termsVo.finance}]]</textarea>
+					<label><input type="checkbox" name="agree2" />동의합니다.</label>
+
+					<h3><span class="essential">(필수)</span>개인정보 수집동의</h3>
+					<textarea class="privacy" readonly>[[${termsVo.privacy}]]</textarea>
+					<label><input type="checkbox" name="agree3" />동의합니다.</label>
+				</section>
+				<section th:if="${type==2}">
+					<h3><span class="essential">(필수)</span>전자세금 신고납부 이용약관</h3>
+					<textarea class="location" readonly>[[${termsVo.tax}]]</textarea>
+					<label><input type="checkbox" name="agree4" />동의합니다.</label>
+				</section>
+				<section>
+					<h3><span class="optional">(선택)</span>위치정보 이용약관</h3>
+					<textarea class="location" readonly>[[${termsVo.location}]]</textarea>
+					<label><input type="checkbox" name="agree5" />동의합니다.</label>
+				</section>
+
+				<div>
+					<input type="button" class="agree" value="동의하기"/>
+					<!-- 원래 button태그는 기본적으로 submit -->
+				</div>
+            </div>
+        </main>        
+        <th:block th:include="@{member/_footer.html}"></th:block>
+    </div>    
+</body>
+</html>

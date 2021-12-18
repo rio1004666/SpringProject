@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kmarket.dao.ProductDao">
+  	<insert id="insertProduct"></insert>
+  	
+  	
+  	<select id="selectProduct" resultType="kr.co.kmarket.vo.ProductVo">
+  		SELECT a.*,
+		FLOOR(price*(1-discount/100)) AS salePrice, 
+  		 b.title AS tit1,
+  		 c.title AS tit2
+		FROM `km_product` AS a
+  		JOIN `km_product_cate1` AS b ON a.cate1 = b.cate1
+  		JOIN `km_product_cate2` AS c ON a.cate1 = c.cate1 AND a.cate2 = c.cate2 <!-- 카테고리1과2 두개의 타이플을 들고오기 -->
+		WHERE `productCode` = #{productCode}; 	
+  	</select>
+  	
+  	<select id="selectProductCountTotal" resultType="int">
+  		SELECT COUNT(`productCode`) 
+  		FROM `km_product` 
+  		WHERE `cate1`=#{cate1} AND `cate2`=#{cate2};
+  	</select>
+  	
+  	
+  	<select id="selectProducts" resultType="kr.co.kmarket.vo.ProductVo">
+  		SELECT *,FLOOR((price*(1-discount/100))) AS salePrice FROM `km_product` 
+  		WHERE `cate1`=#{cate1} AND `cate2`=#{cate2}
+  		<if test="order == 1">ORDER BY `sold` DESC</if>
+  		<if test="order == 2">ORDER BY `salePrice` ASC</if>
+  		<if test="order == 3">ORDER BY `salePrice` DESC</if>
+  		<if test="order == 4">ORDER BY `score` DESC</if>
+  		<if test="order == 5">ORDER BY `review` DESC</if>
+  		<if test="order == 6">ORDER BY `rdate` DESC</if>
+  		LIMIT #{start},10;
+  	</select>
+  	
+  	<select id="selectCategoryTitle" resultType="kr.co.kmarket.vo.CategoriesVo">
+		SELECT
+			b.cate1,
+			b.cate2,
+			a.title AS tit1, 
+			b.title AS tit2
+		FROM `km_product_cate1` AS a
+		JOIN `km_product_cate2` AS b
+		ON a.cate1 = b.cate1
+		WHERE b.cate1=#{cate1} AND b.cate2=#{cate2};
+	</select>
+  	<select id="selectProductSearch" resultType="kr.co.kmarket.vo.ProductVo">
+		SELECT *, FLOOR(price * (1 - discount / 100)) AS salePrice
+		FROM `km_product` 
+		WHERE
+			<if test="chk1==1">`name` LIKE CONCAT('%', #{keyword}, '%')</if>
+			<if test="chk2==1">AND `descript` LIKE CONCAT('%', #{keyword}, '%')</if>
+			<if test="chk3==1">AND FLOOR(price * (1 - discount / 100)) BETWEEN #{min} AND #{max}</if>
+		ORDER BY `sold` DESC;	
+	</select>
+  	
+  	
+  	
+  	<update id="updateProduct"></update>
+  	<delete id="deleteProduct"></delete>	
+</mapper>

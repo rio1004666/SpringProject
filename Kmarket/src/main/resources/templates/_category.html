@@ -1,0 +1,40 @@
+<script>
+	$(function(){
+		var category = $('.category');
+		//카테고리 요청하기 
+		$.get('/Kmarket/getCategories',function(data){
+			// 여기서 data는 List<CategoriesVo> 객체이고 이 안에 있는 객체들을 하나씩 불러와서 화면에 출력할 것입니다.  
+			$.each(data,function(i, catesVo){
+				// 각각 카테고리 해당하는 이미지를 바꾸기위해 변수설정 
+				var ico = '';
+				if(i == 0) ico='fas fa-shopping-bag';
+				if(i == 1) ico='fas fa-tshirt';
+				if(i == 2) ico='fas fa-baby-carriage';
+				if(i == 3) ico='fas fa-utensils';
+				if(i == 4) ico='fas fa-home';
+				if(i == 5) ico='fas fa-tv';
+				if(i == 6) ico='fas fa-running';
+				if(i == 7) ico='fas fa-car';
+				if(i == 8) ico='fas fa-book';
+				var tag = "<li>";
+					tag += "<a href='#'><i class='"+ico+"'></i>"+catesVo.tit1+"</a>"; // html태그안에 자바스크립트 변수 넣기
+					tag += "<ol class='cate2s'></ol>";
+			        tag += "</li>";
+				category.append(tag); // html 태그를 추가해서 화면에 출력합니다. 
+				//2차 카테고리 생성
+				$.each(catesVo.cate2List,function(j,cate2Vo){
+					// 해당하는 카테고리에 대해서만 ol를 선택해서 append한다.
+					var url = "/Kmarket/product/list?cate1="+cate2Vo.cate1+"&cate2="+cate2Vo.cate2; // 카테고리1안에 카테고리2에서의 리스트를 불러오기위한 매개변수 전달
+					$('.cate2s').eq(i).append("<li><a href='"+url+"'>"+cate2Vo.title+"</a></li>");
+				});
+			});
+			
+		});
+	});
+</script>
+
+<!-- 카테고리 -->
+<ul class="category">     
+    <li><i class="fa fa-bars" aria-hidden="true"></i>카테고리</li>
+    <!-- 위의 제이쿼리 수행으로 이곳에 각 카테고리를 출력합니다.-->
+</ul>

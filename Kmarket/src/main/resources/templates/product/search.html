@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="utf-8">
+    <title>K마켓::대한민국 1등 온라인 쇼핑</title>
+    <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+    <link rel="shortcut icon" href="../img/favicon.ico" id="favicon">
+    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <link rel="stylesheet" th:href="@{/css/sub.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common.css}"/>
+    <!-- CDN 주소는 타림리프문법 적용해도되고 안해도된다. -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script>
+    <script th:src="@{/js/category.js}"></script>
+    <script th:src="@{/js/bannerSlider.js}"></script>
+    <script th:src="@{/js/best.js}"></script>
+    <script th:src="@{/js/top.js}"></script>
+    <script></script>
+  </head>
+  <body>
+    <div id="wrapper">
+      <th:block th:include="_header.html"></th:block>
+      <main>
+        <!-- 카테고리/베스트 상품 영역 -->
+        <aside>
+          <th:block th:include="_category.html"></th:block>
+        </aside>
+
+        <section id="search">
+          <nav>
+            <h1>상품 검색 결과</h1>
+            <p>
+              HOME > <span>상품검색</span> > <strong>[[${keyword}]]</strong>
+            </p>
+          </nav>
+
+          <div class="detail_search">
+            <h3><strong>[[${keyword}]]</strong>검색결과 <em>(총&nbsp;:&nbsp;<span>[[${productCount}]]</span>&nbsp;건)</em></h3>
+            <form th:action="@{/Kmarket/product/search}" method="get">
+              <input type="text" name="keyword"/>
+              <input type="submit" value="검색"/>
+              <span>
+                  <label><input type="checkbox" name="chk1" value="1" checked disabled>상품명</label>
+                  <label><input type="checkbox" name="chk2" value="1">상품설명</label>
+                  <label><input type="checkbox" name="chk3" value="1">상품가격</label>
+                  <input type="text" name="min" value="0"/>원&nbsp;~&nbsp;<input type="text" name="max" value="0"/>원
+              </span>
+            </form>
+            <p class="info">
+              상세검색을 선택하지 않거나, 상품가격을 입력하지 않으면 전체에서 검색합니다.<br>
+              검색어는 최대 30글자까지, 여러개의 검색어를 공백으로 구분하여 입력 할수 있습니다.
+            </p>
+          </div>
+          <ul class="sort">
+              <li><a href="#" class="on">판매많은순</a></li>
+              <li><a href="#">낮은가격순</a></li>
+              <li><a href="#">높은가격순</a></li>
+              <li><a href="#">평점높은순</a></li>
+              <li><a href="#">후기많은순</a></li>
+              <li><a href="#">최근등록순</a></li>
+          </ul>
+          <section>
+            <article th:each="product:${products}">
+                  <ul>
+                    <li>
+                      <a th:href="@{/Kmarket/product/view}" class="thumb">
+                      	<img th:src="@{/thumb/{cate1}/{cate2}/{img}(cate1=${product.cate1}, cate2=${product.cate2}, img=${product.thumb1})}" alt="상품이미지"/>
+                      </a>
+                    </li>
+                    <li>
+                      <h3 class="name">[[${product.name}]]</h3>
+                      <p class="desc">
+                        <a th:href="@{/Kmarket/product/view}">[[${product.descript}]]</a>
+                      </p>
+                    </li>
+                    <li>
+                      <div class="dis_price">
+                        <ins>[[${#numbers.formatInteger(product.salePrice, 3, 'COMMA')}]]</ins>
+                      </div>
+                      <div class="org_price">
+                        <del>[[${#numbers.formatInteger(product.price, 3, 'COMMA')}]]</del>
+                        <span>[[${product.discount}]]%</span>
+                      </div>
+                      <span th:if="${product.delivery == 0}" class="freeshipping">무료배송</span>
+                      <span th:if="${product.delivery != 0}">배송비 [[${#numbers.formatInteger(product.delivery, 3, 'COMMA')}]]원</span>
+                    </li>
+                    <li>
+                      <h4 class="seller"><i class="fas fa-home"></i>&nbsp;[[${product.company}]]</h4>
+                      <h5 class="badge power">판매자등급</h5>
+                      <h6 th:if="${product.score == 1}" class="rating star1">상품평</h6>
+                      <h6 th:if="${product.score == 2}" class="rating star2">상품평</h6>
+                      <h6 th:if="${product.score == 3}" class="rating star3">상품평</h6>
+                      <h6 th:if="${product.score == 4}" class="rating star4">상품평</h6>
+                      <h6 th:if="${product.score == 5}" class="rating star5">상품평</h6>
+                    </li>
+                  </ul>
+                </article>
+            
+          </section>
+          <div class="paging">
+            <span class="prev">
+              <a href="#"><&nbsp;이전</a>
+            </span>
+            <span class="num">
+              <a href="#" class="on">1</a>
+              <a href="#">2</a>
+              <a href="#">3</a>
+              <a href="#">4</a>
+              <a href="#">5</a>
+              <a href="#">6</a>
+              <a href="#">7</a>
+            </span>
+            <span class="next">
+              <a href="#">다음&nbsp;></a>
+            </span>
+          </div>
+        </section>
+      </main>
+      <th:block th:include="_footer.html"></th:block>
+      <button type="button" id="top">상단이동</button>
+    </div>
+  </body>
+</html>

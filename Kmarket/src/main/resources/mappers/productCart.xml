@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kmarket.dao.ProductCartDao">
+  	<insert id="insertCart">
+  		INSERT INTO `km_product_cart` SET
+  		`uid` = #{uid},
+  		`productCode` = #{productCode},
+  		`count` = #{count},
+  		`price` = #{price},
+  		`discount` = #{discount},
+  		`point` = #{point},
+  		`delivery` = #{delivery},
+  		`total` = #{total},
+  		`rdate` = NOW();
+  	</insert>
+  	<select id="selectCountCart" resultType="int">
+  		SELECT COUNT(`cartId`) FROM `km_product_cart`
+		WHERE `uid` = #{uid} AND `productCode`=#{productCode};
+  	</select>
+  	<select id="selectCarts" resultType="kr.co.kmarket.vo.ProductCartVo">
+  	
+  		SELECT a.*,b.cate1,b.cate2, b.name, b.thumb1 
+  		FROM `km_product_cart` AS a
+  		JOIN `km_product` AS b
+  		ON a.productCode = b.productCode 
+  		
+  		WHERE`uid`=#{uid}
+  		ORDER BY `cartId` ASC;
+  	
+  	
+  	</select>
+  	<select id="updateCart"></select>
+  	<delete id="deleteCart">
+		DELETE FROM `km_product_cart` 
+		WHERE `cartId` IN
+		<foreach collection="array" item="cartId" open="(" close=")" separator=",">
+			#{cartId}
+		</foreach>
+	</delete>
+</mapper>

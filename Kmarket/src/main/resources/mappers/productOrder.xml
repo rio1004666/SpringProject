@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="kr.co.kmarket.dao.ProductOrderDao">
+	<insert id="insertOrder" useGeneratedKeys="true" keyProperty="orderId">
+		INSERT INTO `km_product_order` SET
+		`uid`=#{uid},
+		`count`=#{count},
+		`price`=#{price},
+		`discount`=#{discount},
+		`delivery`=#{delivery},
+		`point`=#{point},
+		`total`=#{total},
+		`rdate`=NOW();
+	</insert>
+	<insert id="insertOrderDetail">
+		INSERT INTO `km_product_order_detail` SET
+		`orderId`=#{orderId},
+		`productCode`=#{productCode},
+		`count`=#{count};
+	</insert>
+	<select id="selectOrders" resultType="kr.co.kmarket.vo.ProductOrderVo">
+		SELECT 
+			a.*,
+			b.`productCode`,
+			b.`count` AS `pCount`,
+			c.`cate1`, c.`cate2`,
+			c.`thumb1`, 
+			c.`name` AS `pName`, 
+			c.`descript` AS `pDescript`,
+			c.`price` AS `pPrice`,
+			c.`discount` AS `pDiscount`,
+			c.`point` AS `pPoint`, 
+			c.`delivery` AS `pDelivery`,
+			FLOOR(c.price * (1 - c.discount / 100)) AS `salePrice`,
+			d.`name` AS `uName`,
+			d.`hp` AS `uHp`,
+			d.`zip` AS `uZip`,
+			d.`addr1` AS `uAddr1`,
+			d.`addr2` AS `uAddr2`,
+			d.`point` AS `uPoint`
+		FROM `km_product_order` AS a
+		JOIN `km_product_order_detail` AS b
+		ON a.orderId = b.orderId
+		JOIN `km_product` AS c
+		ON b.productCode = c.productCode
+		JOIN `km_member` AS d
+		ON a.uid=d.uid
+		WHERE a.`orderId`=#{orderId};
+	</select>
+	<select id="selectOrder"></select>
+	<update id="updateOrder">
+		UPDATE `km_product_order` SET
+			`orderer`=#{orderer},
+			`hp`=#{hp},
+			`zip`=#{zip},
+			`addr1`=#{addr1},
+			`addr2`=#{addr2},
+			`payment`=#{payment},
+			`complete`=1,
+			`completeDate`=NOW()
+		WHERE
+			`orderId`=#{orderId};	
+	</update>
+	<delete id="deleteOrder"></delete>
+</mapper>
